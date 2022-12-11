@@ -1,0 +1,18 @@
+{
+    "Version": 1,
+    "Multiprocessing max. nproc": 8,
+    "RAMSES": {
+        "ndimensions": 3,
+        "amr_field_descr": [
+            {"__type__": "scalar_field", "__file_type__": "hydro", "name": "rho", "ivar": 0},
+            {"__type__": "vector_field", "__file_type__": "hydro", "name": "vel", "ivars": [1, 2, 3]},
+            {"__type__": "vector_field", "__file_type__": "hydro", "name": "Bl", "ivars": [4, 5, 6]},
+            {"__type__": "vector_field", "__file_type__": "hydro", "name": "Br", "ivars": [7, 8, 9]},
+            {"__type__": "scalar_field", "__file_type__": "hydro", "name": "P", "ivar": 10},
+            {"__type__": "scalar_field", "__file_type__": "hydro", "name": "e_int", "ivar": 11},
+            {"__type__": "scalar_field", "__file_type__": "hydro", "name": "T", "ivar": 12},
+            {"__type__": "scalar_field", "__file_type__": "grav", "name": "phi", "ivar": 0},
+            {"__type__": "vector_field", "__file_type__": "grav", "name": "g", "ivars": [1, 2, 3]}
+        ]
+    }
+}
