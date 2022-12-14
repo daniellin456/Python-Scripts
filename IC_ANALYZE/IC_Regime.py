@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import sympy as sym
+from matplotlib.colors import *
 
 
 def cooling(nH, T, x):
@@ -243,111 +243,85 @@ def calculate_Gamma(m, n):
     Gamma3 = 1 + (2 - m) / (n - 1)
     return Gamma1, Gamma2, Gamma3
 
-def plot_m(fig, ax, nH_array, T_array, m_matrix):
-    print("Extrema of m")
-    print(np.min(m_matrix))
-    print(np.max(m_matrix))
-    print()
-    m_matrix = np.flip(m_matrix.T, axis=0)
-    im = ax.imshow(m_matrix, origin='lower', cmap="rainbow", vmin=0.1, vmax=10,
-                   extent=(nH_array[0], nH_array[-1], T_array[0], T_array[-1]))
+
+def plot_m(fig, ax, extent, m_matrix):
+    print("Extrema of m: min:%24.14e, max: %24.14e" % (np.min(m_matrix), np.max(m_matrix)))
+
+    im = ax.imshow(m_matrix.T, origin='lower', cmap="rainbow", norm=LogNorm(vmin=1e-1, vmax=1e2), extent=extent)
     ax.set_title("m(nH, T)")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    ax.set_xscale('log')
-    ax.set_yscale('log')
     fig.colorbar(im, ax=ax, extend='both', label='m')
     return
 
 
-def plot_n(fig, ax, nH_array, T_array, n_matrix):
-    print("Extrema of n")
-    print(np.min(n_matrix))
-    print(np.max(n_matrix))
-    print()
-    n_matrix = np.flip(n_matrix.T, axis=0)
-    im = ax.imshow(n_matrix, origin='lower', cmap="rainbow", vmin=0.01, vmax=0.1,
-                   extent=(nH_array[0], nH_array[-1], T_array[0], T_array[-1]))
+def plot_n(fig, ax, extent, n_matrix):
+    print("Extrema of n: min:%24.14e, max: %24.14e" % (np.min(n_matrix), np.max(n_matrix)))
+
+    im = ax.imshow(n_matrix.T, origin='lower', cmap="rainbow", norm=LogNorm(vmin=1e-2, vmax=1e2), extent=extent)
     ax.set_title("n(nH, T)")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    ax.set_xscale('log')
-    ax.set_yscale('log')
     fig.colorbar(im, ax=ax, extend='both', label='n')
     return
 
 
-def plot_Gamma1(fig, ax, nH_array, T_array, Gamma1):
-    print("Extrema of Gamma_1")
-    print(np.min(Gamma1))
-    print(np.max(Gamma1))
-    print()
-    Gamma1 = np.flip(Gamma1.T, axis=0)
-    im = ax.imshow(Gamma1, origin='lower', cmap="rainbow", vmin=0.5, vmax=5,
-                   extent=(nH_array[0], nH_array[-1], T_array[0], T_array[-1]))
-    ax.set_title(r"$\Gamma_1(nH,T)$")
+def plot_Gamma1(fig, ax, extent, Gamma1):
+    print("Extrema of Gamma1: min:%24.14e, max: %24.14e" % (np.min(Gamma1), np.max(Gamma1)))
+
+    im = ax.imshow(Gamma1.T, origin='lower', cmap="rainbow", norm=SymLogNorm(linthresh=1, vmin=-10, vmax=10),
+                   extent=extent)
+    ax.set_title(r"$\Gamma_1\rm{(nH,T)}$")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    ax.set_xscale("log")
-    ax.set_yscale("log")
     fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_1$")
     return
 
 
-def plot_Gamma2(fig, ax, nH_array, T_array, Gamma2):
-    print("Extrema of Gamma2")
-    print(np.min(Gamma2))
-    print(np.max(Gamma2))
-    print()
-    Gamma2 = np.flip(Gamma2.T, axis=0)
-    im = ax.imshow(Gamma2, origin="lower", cmap="rainbow", vmin=0.5, vmax=5,
-                   extent=(nH_array[0], nH_array[-1], T_array[0], T_array[-1]))
-    ax.set_title(r"$\Gamma_2(nH,T)$")
+def plot_Gamma2(fig, ax, extent, Gamma2):
+    print("Extrema of Gamma2: min:%24.14e, max: %24.14e" % (np.min(Gamma2), np.max(Gamma2)))
+
+    im = ax.imshow(Gamma2.T, origin="lower", cmap="rainbow", norm=SymLogNorm(linthresh=1, vmin=-10, vmax=10),
+                   extent=extent)
+    ax.set_title(r"$\Gamma_2\rm{(nH,T)}$")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    ax.set_xscale("log")
-    ax.set_yscale("log")
     fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_2$")
     return
 
 
-def plot_Gamma3(fig, ax, nH_array, T_array, Gamma3):
-    print("Extrema of Gamma_3")
-    print(np.min(Gamma3))
-    print(np.max(Gamma3))
-    print()
-    Gamma3 = np.flip(Gamma3.T, axis=0)
-    im = ax.imshow(Gamma3, origin="lower", cmap="rainbow", vmin=0.5, vmax=5,
-                   extent=(nH_array[0], nH_array[-1], T_array[0], T_array[-1]))
-    ax.set_title(r"$\Gamma_3(nH,T)$")
+def plot_Gamma3(fig, ax, extent, Gamma3):
+    print("Extrema of Gamma_3: min: %24.14e, max: %24.14e" % (np.min(Gamma3), np.max(Gamma3)))
+
+    im = ax.imshow(Gamma3.T, origin="lower", cmap="rainbow", norm=SymLogNorm(linthresh=0.01, vmin=-10, vmax=10),
+                   extent=extent)
+    ax.set_title(r"$\Gamma_3\rm{(nH,T)}$")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    ax.set_xscale("log")
-    ax.set_yscale("log")
     fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_3$")
     return
 
 
-def plot_Gamma1_m1(fig, ax, nH_list, T_list, Gamma1_m1):
+def plot_Gamma1_m1(fig, ax, extent, Gamma1_m1):
     return
 
 
-def plot_Gamma2_m1(fig, ax, nH_list, T_list, Gamma2_m1):
+def plot_Gamma2_m1(fig, ax, extent, Gamma2_m1):
     return
 
 
-def plot_Gamma3_m1(fig, ax, nH_list, T_list, Gamma3_m1):
+def plot_Gamma3_m1(fig, ax, extent, Gamma3_m1):
     return
 
 
-def make_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3):
+def make_plot(extent, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3):
     fig, ((ax0, ax1, ax2), (ax3, ax4, ax5)) = plt.subplots(nrows=2, ncols=3, figsize=(21, 12))
 
-    plot_m(fig, ax0, nH_array, T_array, m_matrix)
-    plot_n(fig, ax1, nH_array, T_array, n_matrix)
-    plot_Gamma1(fig, ax3, nH_array, T_array, Gamma1)
-    plot_Gamma2(fig, ax4, nH_array, T_array, Gamma2)
-    plot_Gamma3(fig, ax5, nH_array, T_array, Gamma3)
+    plot_m(fig, ax0, extent, m_matrix)
+    plot_n(fig, ax1, extent, n_matrix)
+    plot_Gamma1(fig, ax3, extent, Gamma1)
+    plot_Gamma2(fig, ax4, extent, Gamma2)
+    plot_Gamma3(fig, ax5, extent, Gamma3)
 
     ## quiver plot
     # plot_Gamma1_m1(fig, ax3, nH_list, T_list, Gamma1 - 1)
@@ -359,20 +333,22 @@ def make_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3):
     # plt.savfig("IC_Analyze.png", dpi=600)
     return
 
-def main():
+
+def mesh_method():
     nH_start = -2
     nH_end = 6
-    nH_count = 500
+    nH_count = 100
     T_start = -2
     T_end = 6
-    T_count = 500
+    T_count = 100
 
     nH_array = np.logspace(nH_start, nH_end, nH_count)
     T_array = np.logspace(T_start, T_end, T_count)
     m_matrix = np.zeros(shape=(nH_count, T_count))
     n_matrix = np.zeros(shape=(nH_count, T_count))
-    calculate_equilibrium_temperature(nH_array, T_array)
-    # TODO: calculate m, n, Gamma1, Gamma2, Gamma3
+
+    nH_mesh, T_mesh = np.meshgrid(nH_array, T_array);
+
     for i in range(0, nH_count):
         for j in range(0, T_count):
             nH = nH_array[i]
@@ -383,10 +359,58 @@ def main():
             m_matrix[i, j] = nH / total_cooling_rate * np.abs(
                 heating(nH, T, x) + nH * dHeatingdRho(nH, T, x) - 2 * nH * cooling(nH, T, x) - nH ** 2 * dCoolingdRho(
                     nH, T, x))
-            n_matrix[i, j] = T / total_cooling_rate * np.abs(nH * dHeatingdTemp(nH, T, x) - nH ** 2 * dCoolingdTemp(nH, T, x))
+            n_matrix[i, j] = T / total_cooling_rate * np.abs(
+                nH * dHeatingdTemp(nH, T, x) - nH ** 2 * dCoolingdTemp(nH, T, x))
+
+    plt.title("m(nH, T)")
+    sc = plt.scatter(nH_mesh, T_mesh, c=m_matrix.T, cmap="rainbow", norm=LogNorm(vmin=1e-1, vmax=1e2))
+    plt.xscale("log")
+    plt.yscale("log")
+    plt.colorbar(sc)
+    plt.show()
+
+    plt.title("n(nH, T)")
+    sc = plt.scatter(nH_mesh, T_mesh, c=n_matrix.T, cmap="rainbow", norm=LogNorm(vmin=1e-2, vmax=1e2))
+    plt.xscale("log")
+    plt.yscale("log")
+    plt.colorbar(sc)
+    plt.show()
+    # Gamma1, Gamma2, Gamma3 = calculate_Gamma(m_matrix, n_matrix)
+    # make_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3)
+
+
+def main():
+    nH_start = -2
+    nH_end = 6
+    nH_count = 100
+    T_start = -2
+    T_end = 6
+    T_count = 100
+    extent = [nH_start, nH_end, T_start, T_end]
+
+    nH_array = np.logspace(nH_start, nH_end, nH_count)
+    T_array = np.logspace(T_start, T_end, T_count)
+    m_matrix = np.zeros(shape=(nH_count, T_count))
+    n_matrix = np.zeros(shape=(nH_count, T_count))
+    # calculate_equilibrium_temperature(nH_array, T_array)
+
+    for i in range(0, nH_count):
+        for j in range(0, T_count):
+            nH = nH_array[i]
+            T = T_array[j]
+            ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
+            x = ne / nH
+            total_cooling_rate = np.abs(nH ** 2 * cooling(nH, T, x) - nH * heating(nH, T, x))
+            m_matrix[i, j] = nH / total_cooling_rate * np.abs(
+                heating(nH, T, x) + nH * dHeatingdRho(nH, T, x) - 2 * nH * cooling(nH, T, x) - nH ** 2 * dCoolingdRho(
+                    nH, T, x))
+            n_matrix[i, j] = T / total_cooling_rate * np.abs(
+                nH * dHeatingdTemp(nH, T, x) - nH ** 2 * dCoolingdTemp(nH, T, x))
 
     Gamma1, Gamma2, Gamma3 = calculate_Gamma(m_matrix, n_matrix)
-    make_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3)
+    make_plot(extent, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3)
+
 
 if __name__ == "__main__":
     main()
+    mesh_method();
