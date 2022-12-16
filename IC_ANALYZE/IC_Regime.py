@@ -153,8 +153,9 @@ def make_plot(nH_array, T_array, balance_temperature, m_matrix, n_matrix, Gamma1
     plot_Gamma3_m1(fig, ax5, nH_mesh, T_mesh, Gamma3 - 1)
 
     plt.tight_layout(pad=2.5)
+    plt.savefig("IC_Analyze.pdf", dpi=600)
     plt.show()
-    plt.savfig("IC_Analyze.pdf", dpi=600)
+
     return
 
 
