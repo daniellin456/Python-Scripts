@@ -81,7 +81,8 @@ def plot_n(fig, ax, extent, n_matrix):
 
 def plot_Gamma1(fig, ax, extent, Gamma1):
     print("Extrema of Gamma1: min:%24.14e, max: %24.14e" % (np.min(Gamma1), np.max(Gamma1)))
-    im = ax.imshow(Gamma1.T, origin='lower', cmap="rainbow", norm=SymLogNorm(linthresh=1, vmin=-10, vmax=10), extent=extent)
+    im = ax.imshow(Gamma1.T, origin='lower', cmap="rainbow", norm=SymLogNorm(linthresh=1, vmin=-10, vmax=10),
+                   extent=extent)
     ax.set_title(r"$\Gamma_1\rm{(nH,T)}$")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
@@ -91,7 +92,8 @@ def plot_Gamma1(fig, ax, extent, Gamma1):
 
 def plot_Gamma2(fig, ax, extent, Gamma2):
     print("Extrema of Gamma2: min:%24.14e, max: %24.14e" % (np.min(Gamma2), np.max(Gamma2)))
-    im = ax.imshow(Gamma2.T, origin="lower", cmap="rainbow", norm=SymLogNorm(linthresh=1, vmin=-10, vmax=10), extent=extent)
+    im = ax.imshow(Gamma2.T, origin="lower", cmap="rainbow", norm=SymLogNorm(linthresh=1, vmin=-10, vmax=10),
+                   extent=extent)
     ax.set_title(r"$\Gamma_2\rm{(nH,T)}$")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
@@ -110,20 +112,17 @@ def plot_Gamma3(fig, ax, extent, Gamma3):
     return
 
 
-def plot_Gamma1_m1(fig, ax, nH_array, T_array, Gamma1_m1):
-    nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
+def plot_Gamma1_m1(fig, ax, nH_mesh, T_mesh, Gamma1_m1):
     ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma1_m1.T, color="white", density=0.5)
     return
 
 
-def plot_Gamma2_m1(fig, ax, nH_array, T_array, Gamma2_m1):
-    nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
+def plot_Gamma2_m1(fig, ax, nH_mesh, T_mesh, Gamma2_m1):
     ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma2_m1.T, color="white", density=0.5)
     return
 
 
-def plot_Gamma3_m1(fig, ax, nH_array, T_array, Gamma3_m1):
-    nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
+def plot_Gamma3_m1(fig, ax, nH_mesh, T_mesh, Gamma3_m1):
     ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma3_m1.T, color="white", density=0.5)
     return
 
@@ -131,7 +130,7 @@ def plot_Gamma3_m1(fig, ax, nH_array, T_array, Gamma3_m1):
 def make_plot(nH_array, T_array, balance_temperature, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3):
     fig, ((ax0, ax1, ax2), (ax3, ax4, ax5)) = plt.subplots(nrows=2, ncols=3, figsize=(21, 12))
     extent = [np.log10(nH_array[0]), np.log10(nH_array[-1]), np.log10(T_array[0]), np.log10(T_array[-1])]
-    nH_mesh, T_mesh = np.meshgrid(nH_array, T_array)
+    nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
 
     plot_m(fig, ax0, extent, m_matrix)
     plot_equilibrium_temperature(fig, ax0, np.log10(nH_array), np.log10(balance_temperature))
@@ -148,14 +147,14 @@ def make_plot(nH_array, T_array, balance_temperature, m_matrix, n_matrix, Gamma1
     plot_Gamma3(fig, ax5, extent, Gamma3)
     plot_equilibrium_temperature(fig, ax5, np.log10(nH_array), np.log10(balance_temperature))
 
-    ## quiver plot
-    plot_Gamma1_m1(fig, ax3, nH_array, T_array, Gamma1 - 1)
-    plot_Gamma2_m1(fig, ax4, nH_array, T_array, Gamma2 - 1)
-    plot_Gamma3_m1(fig, ax5, nH_array, T_array, Gamma3 - 1)
+    ## streamplot
+    plot_Gamma1_m1(fig, ax3, nH_mesh, T_mesh, Gamma1 - 1)
+    plot_Gamma2_m1(fig, ax4, nH_mesh, T_mesh, Gamma2 - 1)
+    plot_Gamma3_m1(fig, ax5, nH_mesh, T_mesh, Gamma3 - 1)
 
     plt.tight_layout(pad=2.5)
     plt.show()
-    # plt.savfig("IC_Analyze.png", dpi=600)
+    plt.savfig("IC_Analyze.pdf", dpi=600)
     return
 
 
