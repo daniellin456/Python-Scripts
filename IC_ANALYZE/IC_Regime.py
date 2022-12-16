@@ -112,19 +112,19 @@ def plot_Gamma3(fig, ax, extent, Gamma3):
 
 def plot_Gamma1_m1(fig, ax, nH_array, T_array, Gamma1_m1):
     nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
-    ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma1_m1.T, color="white")
+    ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma1_m1.T, color="white", density=0.5)
     return
 
 
 def plot_Gamma2_m1(fig, ax, nH_array, T_array, Gamma2_m1):
     nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
-    ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma2_m1.T, color="white")
+    ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma2_m1.T, color="white", density=0.5)
     return
 
 
 def plot_Gamma3_m1(fig, ax, nH_array, T_array, Gamma3_m1):
     nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
-    ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma3_m1.T, color="white")
+    ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma3_m1.T, color="white", density=0.5)
     return
 
 
