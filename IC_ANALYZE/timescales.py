@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import *
 from Cooling_Function import *
+from IC_Regime import *
 
 kb = 1.3606e-16
 gamma = 5 / 3
@@ -11,11 +12,11 @@ mp = 1.66e-24
 
 
 def main():
-    nH_start = 0
+    nH_start = -2
     nH_end = 6
     nH_count = 100
     T_start = 0
-    T_end = 6
+    T_end = 4
     T_count = 100
 
     nH_array = np.logspace(nH_start, nH_end, nH_count)
@@ -37,6 +38,7 @@ def main():
         "Extrema of  timescale_ratio, min: %24.14e, max: %24.14e" % (np.min(timescale_ratio), np.max(timescale_ratio)))
     sc = plt.imshow(timescale_ratio.T, origin='lower', extent=(nH_start, nH_end, T_start, T_end), cmap="RdBu",
                     norm=LogNorm(vmin=1e-3, vmax=1e3))
+    plt.plot(np.log10(nH_array), np.log10(calculate_equilibrium_temperature(nH_array, T_array)), color="black", linestyle="--")
     plt.colorbar(sc)
     plt.show()
 
