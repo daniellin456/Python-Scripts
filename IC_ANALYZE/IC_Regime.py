@@ -52,9 +52,31 @@ def calculate_Gamma(m, n):
     Gamma3 = 1 + (2 - m) / (n - 1)
     return Gamma1, Gamma2, Gamma3
 
+def calculate_cooling_rate(nH_array, T_array):
+    total_cooling_rate = np.zeros(shape=(len(nH_array), len(T_array)))
+    for i in range(0, len(nH_array)):
+        nH = nH_array[i]
+        for j in range(0, len(T_array)):
+            T = T_array[j]
+            ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
+            x = ne / nH
+
+            total_cooling_rate[i, j] = np.abs(nH ** 2 * cooling(nH, T, x) - nH * heating(nH, T, x))
+    return total_cooling_rate
 
 def plot_equilibrium_temperature(fig, ax, nH_array, balance_temperature):
     ax.plot(nH_array, balance_temperature, linewidth=3, linestyle="--", color="black")
+    return
+
+def plot_total_cooling_rate(fig, ax, nH_array, T_array, total_cooling_rate):
+
+    for i in range(0, len(T_array), 100):
+        ax.plot(np.log10(nH_array), np.abs(np.log(total_cooling_rate.T[i])), label="T =" + str(T_array[i]))
+
+    ax.set_title(r"$\Lambda(\rho,T)$")
+    ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
+    ax.set_ylabel(r'$\rm{log}\; \Lambda_0 \; (\rm{erg cm^{-3} s^{-1})$')
+    ax.legend()
     return
 
 
@@ -127,7 +149,7 @@ def plot_Gamma3_m1(fig, ax, nH_mesh, T_mesh, Gamma3_m1):
     return
 
 
-def make_plot(nH_array, T_array, balance_temperature, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3):
+def make_plot(nH_array, T_array, balance_temperature, total_cooling_rate, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3):
     fig, ((ax0, ax1, ax2), (ax3, ax4, ax5)) = plt.subplots(nrows=2, ncols=3, figsize=(21, 12))
     extent = [np.log10(nH_array[0]), np.log10(nH_array[-1]), np.log10(T_array[0]), np.log10(T_array[-1])]
     nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
@@ -137,6 +159,8 @@ def make_plot(nH_array, T_array, balance_temperature, m_matrix, n_matrix, Gamma1
 
     plot_n(fig, ax1, extent, n_matrix)
     plot_equilibrium_temperature(fig, ax1, np.log10(nH_array), np.log10(balance_temperature))
+
+    plot_total_cooling_rate(fig, ax2, nH_array, T_array, total_cooling_rate)
 
     plot_Gamma1(fig, ax3, extent, Gamma1)
     plot_equilibrium_temperature(fig, ax3, np.log10(nH_array), np.log10(balance_temperature))
@@ -170,9 +194,10 @@ def main():
     nH_array = np.logspace(nH_start, nH_end, nH_count)
     T_array = np.logspace(T_start, T_end, T_count)
     balance_temperature = calculate_equilibrium_temperature(nH_array, T_array)
+    total_cooling_rate = calculate_cooling_rate(nH_array, T_array)
     m_matrix, n_matrix = calculate_m_n(nH_array, T_array, nH_count, T_count)
     Gamma1, Gamma2, Gamma3 = calculate_Gamma(m_matrix, n_matrix)
-    make_plot(nH_array, T_array, balance_temperature, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3)
+    make_plot(nH_array, T_array, balance_temperature, total_cooling_rate, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3)
 
 
 if __name__ == "__main__":
