@@ -13,7 +13,7 @@ mp = 1.66e-24
 
 def main():
     nH_start = -2
-    nH_end = 6
+    nH_end = 10
     nH_count = 100
     T_start = 0
     T_end = 4
@@ -23,6 +23,7 @@ def main():
     T_array = np.logspace(T_start, T_end, T_count)
     timescale_ratio = np.zeros(shape=(nH_count, T_count))
 
+    nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
     for i in range(0, nH_count):
         for j in range(0, T_count):
             nH = nH_array[i]
@@ -32,13 +33,15 @@ def main():
 
             total_cooling_rate = np.abs(nH * heating(nH, T, x) - nH ** 2 * cooling(nH, T, x))
             cooling_heating_timescale = nH * kb * T / ((gamma - 1) * total_cooling_rate)
-            free_fall_Timescale = np.sqrt(1 / (G * nH * mu * mp))
+            free_fall_Timescale = np.sqrt(3 * np.pi / (32 * G * nH * mu * mp))
             timescale_ratio[i, j] = cooling_heating_timescale / free_fall_Timescale
     print(
         "Extrema of  timescale_ratio, min: %24.14e, max: %24.14e" % (np.min(timescale_ratio), np.max(timescale_ratio)))
     sc = plt.imshow(timescale_ratio.T, origin='lower', extent=(nH_start, nH_end, T_start, T_end), cmap="RdBu",
                     norm=LogNorm(vmin=1e-3, vmax=1e3))
-    plt.plot(np.log10(nH_array), np.log10(calculate_equilibrium_temperature(nH_array, T_array)), color="black", linestyle="--")
+    plt.plot(np.log10(nH_array), np.log10(calculate_equilibrium_temperature(nH_array, T_array)), color="black",
+             linestyle="--")
+    plt.contour(nH_mesh, T_mesh, timescale_ratio.T, levels=[0.001, 0.01, 0.1])
     plt.colorbar(sc)
     plt.show()
 
