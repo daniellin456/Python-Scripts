@@ -43,6 +43,7 @@ def main():
              linestyle="--")
     plt.contour(nH_mesh, T_mesh, timescale_ratio.T, levels=[0.001, 0.01, 0.1])
     plt.colorbar(sc)
+    plt.savefig("timescale_ratio.pdf", dpi=600)
     plt.show()
 
     return
