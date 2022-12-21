@@ -8,28 +8,26 @@ def plot_equilibrium_temperature(fig, ax, nH_array, balance_temperature):
     return
 
 
-def plot_dLambdadRho_by_np_diff(fig, ax, nH_array, T_array, dLambda_dRho_by_np_diff):
+def plot_dTotal_Lambda_dRho_by_np_diff(fig, ax, nH_array, T_array, dTotal_Lambda_dRho_by_np_diff):
     for i in range(0, len(T_array)):
-        ax.plot(np.log10(nH_array[1:]), np.log10(dLambda_dRho_by_np_diff[i]), label="T =" + str(T_array[i]))
+        ax.plot(np.log10(nH_array[1:]), np.log10(dTotal_Lambda_dRho_by_np_diff[i]), label="T =" + str(T_array[i]))
 
+    ax.set_title(r"$\rm{\frac{d\Lambda_{tot}}{d\rho}}\;by\;np.diffl$")
+    ax.set_xlabel(r"$\rm{log\;nH\;cm^{-3}}$")
+    ax.set_ylabel(r"$\rm{\frac{d\Lambda_{tot}}{d\rho}}$")
     ax.set_ylim(-3, 3)
     ax.legend()
     return
 
 
-def plot_dLambdadRho_by_analytical(fig, ax, nH_array, T_array, dLambda_dRho_by_analytical):
+def plot_dTotal_Lambda_dRho_by_analytical(fig, ax, nH_array, T_array, dTotal_Lambda_dRho_by_analytical):
     for i in range(0, len(T_array)):
-        ax.plot(np.log10(nH_array), np.log10(dLambda_dRho_by_analytical[i]), label="T =" + str(T_array[i]))
+        ax.plot(np.log10(nH_array), np.log10(dTotal_Lambda_dRho_by_analytical[i]), label="T =" + str(T_array[i]))
 
+    ax.set_title(r"$\rm{\frac{d\Lambda_{tot}}{d\rho}}\;by\;analytical$")
+    ax.set_xlabel(r"$\rm{log\;nH\;cm^{-3}}$")
+    ax.set_ylabel(r"$\rm{\frac{d\Lambda_{tot}}{d\rho}}$")
     ax.set_ylim(-3, 3)
-    ax.legend()
-    return
-
-
-def plot_dLambdadTemp(fig, ax, nH_array, T_array, dLambda_dTemp):
-    specific_Rho_Array = np.asarray([1e-2, 1e-1, 1e0, 1e1, 1e2, 1e3, 1e4, 1e6, 1e6])
-    for i in range(0, len(specific_Rho_Array)):
-        ax.plot(np.log10(T_array[1:]), dLambda_dTemp[i], label=r"$\rho =$" + str(specific_Rho_Array[i]))
     ax.legend()
     return
 
@@ -78,7 +76,7 @@ def plot_Gamma2(fig, ax, extent, Gamma2):
 
 
 def plot_Gamma3(fig, ax, extent, Gamma3):
-    print("Extrema of Gamma_3: min: %24.14e, max: %24.14e" % (np.min(Gamma3), np.max(Gamma3)))
+    print("Extrema of Gamma3: min: %24.14e, max: %24.14e" % (np.min(Gamma3), np.max(Gamma3)))
     im = ax.imshow(Gamma3.T, origin="lower", cmap="rainbow", norm=SymLogNorm(linthresh=0.01, vmin=-10, vmax=10),
                    extent=extent)
     ax.set_title(r"$\Gamma_3\rm{(nH,T)}$")
@@ -100,4 +98,60 @@ def plot_Gamma2_m1(fig, ax, nH_mesh, T_mesh, Gamma2_m1):
 
 def plot_Gamma3_m1(fig, ax, nH_mesh, T_mesh, Gamma3_m1):
     ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma3_m1.T, color="white", density=0.5)
+    return
+
+def plot_dLambda_dRho_by_np_diff(fig, ax, nH_array, T_array, dLambda_dRho_by_np_diff):
+    for i in range(0, len(T_array)):
+        ax.plot(np.log10(nH_array[1:]), np.log10(np.abs(dLambda_dRho_by_np_diff[i])), label="T =" + str(T_array[i]))
+
+    ax.set_title(r"$\rm{\frac{d\Lambda}{d\rho}}\;by\;np.diff$")
+    ax.set_xlabel(r"$\rm{log\;nH\;cm^{-3}}$")
+    ax.set_ylabel(r"$\rm{\frac{d\Lambda}{d\rho}}$")
+    ax.legend()
+    return
+
+
+def plot_dLambda_dRho_by_analytical(fig, ax, nH_array, T_array, dLambda_dRho_by_analytical):
+    for i in range(0, len(T_array)):
+        ax.plot(np.log10(nH_array), np.log10(np.abs(dLambda_dRho_by_analytical[i])), label="T =" + str(T_array[i]))
+
+    ax.set_title(r"$\rm{\frac{d\Lambda}{d\rho}}\;by\;analytical$")
+    ax.set_xlabel(r"$\rm{log\;nH\;cm^{-3}}$")
+    ax.set_ylabel(r"$\rm{\frac{d\Lambda}{d\rho}}$")
+    ax.legend()
+    return
+
+
+def plot_dGamma_dRho_by_np_diff(fig, ax, nH_array, T_array, dGamma_dRho_by_np_diff):
+    for i in range(0, len(T_array)):
+        ax.plot(np.log10(nH_array[1:]), np.log10(dGamma_dRho_by_np_diff[i]), label="T =" + str(T_array[i]))
+
+    ax.set_title(r"$\rm{\frac{d\Gamma}{d\rho}}\;by\;np.diff$")
+    ax.set_xlabel(r"$\rm{log\;nH\;cm^{-3}}$")
+    ax.set_ylabel(r"$\rm{\frac{d\Gamma}{d\rho}}$")
+    ax.set_ylim(-36, -24)
+
+    ax.legend()
+    return
+
+
+def plot_dGamma_dRho_by_analytical(fig, ax, nH_array, T_array, dLambda_dRho_by_analytical):
+    for i in range(0, len(T_array)):
+        ax.plot(np.log10(nH_array), np.log10(dLambda_dRho_by_analytical[i]), label="T =" + str(T_array[i]))
+
+    ax.set_title(r"$\rm{\frac{d\Gamma}{d\rho}}\;by\;analytical$")
+    ax.set_xlabel(r"$\rm{log\;nH\;cm^{-3}}$")
+    ax.set_ylabel(r"$\rm{\frac{d\Gamma}{d\rho}}$")
+    ax.set_ylim(-36, -24)
+
+    ax.legend()
+    return
+
+
+def plot_ionization(fig, ax, nH_array, T_array, ionization):
+    ax_ionization = ax.twinx()
+    for i in range(0, len(T_array)):
+        ax_ionization.plot(np.log10(nH_array), np.log10(ionization[i]), label="T =" + str(T_array[i]), linestyle='--')
+    ax_ionization.set_ylabel('log10 ionization')
+    ax_ionization.legend(loc="center right")
     return
