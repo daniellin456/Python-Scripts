@@ -4,8 +4,8 @@ from module_calculate import *
 
 def main():
     nH_start = -2
-    nH_end = 6
-    nH_count = 500
+    nH_end = 10
+    nH_count = 2000
     T_start = 0
     T_end = 4
     T_count = 500
