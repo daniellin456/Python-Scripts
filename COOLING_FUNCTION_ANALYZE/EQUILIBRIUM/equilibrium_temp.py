@@ -51,8 +51,8 @@ for i in range( 0, len( Log_Total_Cooling_low ) ):
     index = np.argsort( np.abs( np.subtract( Log_Total_Cooling_low[i], Log_Total_Heating[i] ) ) )[0]
     equilibrium_array.append(Low_T_array[index])
 
-np.save( '/data/daniellin/COOLING_FUNCTION_ANALYZE/EQUILIBRIUM/nH.npy', nH_array )
-np.save( '/data/daniellin/COOLING_FUNCTION_ANALYZE/EQUILIBRIUM/equilibrium_Temp.npy', equilibrium_array )
+np.save( '/data/daniellin/PYTHON_SCRIPTS/COOLING_FUNCTION_ANALYZE/EQUILIBRIUM/nH.npy', nH_array )
+np.save( '/data/daniellin/PYTHON_SCRIPTS/COOLING_FUNCTION_ANALYZE/EQUILIBRIUM/equilibrium_Temp.npy', equilibrium_array )
 #print( nH_array )
 #print( equilibrium_array )
 #plt.figure( figsize=( 5, 4 ))

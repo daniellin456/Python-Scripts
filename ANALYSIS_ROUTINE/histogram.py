@@ -217,9 +217,9 @@ def make_histogram(read_dir, write_dir, output):
         density_temperature_2d_histogram > 0, density_temperature_2d_histogram, np.nan)
 
     # Calculate theoretical equilibrium temperature
-    nH = np.load('/data/daniellin/COOLING_FUNCTION_ANALYZE/EQUILIBRIUM/nH.npy')
+    nH = np.load('/data/daniellin/PYTHON_SCRIPTS/COOLING_FUNCTION_ANALYZE/EQUILIBRIUM/nH.npy')
     equilibrium_temperature = np.load(
-        '/data/daniellin/COOLING_FUNCTION_ANALYZE/EQUILIBRIUM/equilibrium_Temp.npy')
+        '/data/daniellin/PYTHON_SCRIPTS/COOLING_FUNCTION_ANALYZE/EQUILIBRIUM/equilibrium_Temp.npy')
 
     # Plot Figures
     fig, ((ax0, ax1, ax2), (ax3, ax4, ax5)) = plt.subplots(
@@ -261,5 +261,5 @@ if __name__ == '__main__':
     read_directory, write_directory = local_dir(args.input, args.output)
     outputs = search_valid_outputs(read_directory)
 
-    for output in outputs[3:]:
+    for output in outputs:
         make_histogram(read_directory, write_directory, output)
