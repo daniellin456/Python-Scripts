@@ -1,7 +1,5 @@
-import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.colors import *
-from module_cooling import *
+
 from IC_Regime import *
 
 kb = 1.3606e-16

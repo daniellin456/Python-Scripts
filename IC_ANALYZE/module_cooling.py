@@ -2,106 +2,63 @@ import numpy as np
 
 
 def CII_Cooling(nH, T, x):
-    return
+    CII = 92.0 * 1.38e-16 * 2.0 * (
+            (2.8E-7 * (T / 100.0) ** -0.5) * x + 8e-10 * (T / 100.0) ** 0.07) * 3.5e-4 * 0.4 * np.exp(-92.0 / T)
+    return CII
 
 
 def OI_Cooling(nH, T, x):
-    return
+    OI = 1e-26 * np.sqrt(T) * (24.0 * np.exp(-228.0 / T) + 7.0 * np.exp(-326.0 / T)) * 4.5E-4
+    return OI
 
 
 def H2_Cooling(nH, T, x):
-    return
+    H2 = 7.3E-19 * x * np.exp(-118400.0 / T)
+    return H2
 
 
 def OI_Line_Cooling(nH, T, x):
-    return
+    OI_Line = 4.5e-4 * (2.3e4 * 1.38e-16 / 3.0 * (5.1e-9 * (T / 10000.) ** 0.57 * x + 1e-12) * np.exp(
+        -2.3e4 / T) + 4.9e4 * 1.38e-16 / 3.0 * (2.5e-9 * (T / 10000.) ** 0.57 * x + 1e-12) * np.exp(
+        -4.9e4 / T) + 2.6e4 * 1.38e-16 * 1.0 * (5.2e-9 * (T / 10000.) ** 0.57 * x + 1e-12) * np.exp(
+        -2.6e4 / T))
+
+    return OI_Line
 
 
 def CII_Line_Cooling(nH, T, x):
-    return
+    CII_Line = 6.2e4 * 1.38e-16 * 1.0 * (2.3e-8 * (T / 10000.0) ** -0.5 * x + 1e-12) * np.exp(
+        -6.2e4 / T) * 3.5e-4 * 0.4
+    return CII_Line
 
 
-def Recombination_Cooling(nH, T, x):
-    return
+def Recombination_Cooling(nH, T, x, param, bet):
+    Recombination = 4.65E-30 * (T ** 0.94) * (param ** bet) * x
+    return Recombination
 
 
-def UV_Heating(nH, T, x):
-    return
+def UV_Heating(nH, T, x, param, G0):
+    epsilon = 4.9E-2 / (1.0 + (param / 1925.) ** 0.73) + 3.7E-2 * (T / 1e4) ** 0.7 / (1. + (param / 5e3))
+    return 1e-24 * epsilon * G0
 
 
 def cooling(nH, T, x):
     G0 = 1.0 / 1.7
     bet = 0.74 / (T ** 0.068)
-    ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
-    if x >= 0.1:
-        param = G0 * np.sqrt(T) / (nH * 0.1)
-        CII_Cooling = 92.0 * 1.38e-16 * 2.0 * (
-                (2.8E-7 * (T / 100.0) ** -0.5) * 0.1 + 8e-10 * (T / 100.0) ** 0.07) * 3.5e-4 * 0.4 * np.exp(
-            -92.0 / T)
-        OI_Cooling = 1e-26 * np.sqrt(T) * (24.0 * np.exp(-228.0 / T) + 7.0 * np.exp(-326.0 / T)) * 4.5E-4
-        H2_Cooling = 7.3E-19 * 0.1 * np.exp(-118400.0 / T)
-        CII_Line_Cooling = 6.2e4 * 1.38e-16 * 1.0 * (2.3e-8 * (T / 10000.0) ** -0.5 * 0.1 + 1e-12) * np.exp(
-            -6.2e4 / T) * 3.5e-4 * 0.4
-        OI_Line_Cooling = 4.5e-4 * (2.3e4 * 1.38e-16 / 3.0 * (5.1e-9 * (T / 10000.) ** 0.57 * 0.1 + 1e-12) * np.exp(
-            -2.3e4 / T) + 4.9e4 * 1.38e-16 / 3.0 * (2.5e-9 * (T / 10000.) ** 0.57 * 0.1 + 1e-12) * np.exp(
-            -4.9e4 / T) + 2.6e4 * 1.38e-16 * 1.0 * (5.2e-9 * (T / 10000.) ** 0.57 * 0.1 + 1e-12) * np.exp(-2.6e4 / T))
-        Recombination_Cooling = 4.65E-30 * (T ** 0.94) * (param ** bet) * 0.1
-    elif x <= 1.4e-4:
-        param = G0 * np.sqrt(T) / (nH * 1.4e-4)
-        CII_Cooling = 92.0 * 1.38e-16 * 2.0 * (
-                (2.8E-7 * (T / 100.0) ** -0.5) * 1.4e-4 + 8e-10 * (T / 100.0) ** 0.07) * 3.5e-4 * 0.4 * np.exp(
-            -92.0 / T)
-        OI_Cooling = 1e-26 * np.sqrt(T) * (24.0 * np.exp(-228.0 / T) + 7.0 * np.exp(-326.0 / T)) * 4.5E-4
-        H2_Cooling = 7.3E-19 * 1.4e-4 * np.exp(-118400.0 / T)
-        CII_Line_Cooling = 6.2e4 * 1.38e-16 * 1.0 * (2.3e-8 * (T / 10000.0) ** -0.5 * 1.4e-4 + 1e-12) * np.exp(
-            -6.2e4 / T) * 3.5e-4 * 0.4
-        OI_Line_Cooling = 4.5e-4 * (2.3e4 * 1.38e-16 / 3.0 * (5.1e-9 * (T / 10000.) ** 0.57 * 1.4e-4 + 1e-12) * np.exp(
-            -2.3e4 / T) + 4.9e4 * 1.38e-16 / 3.0 * (2.5e-9 * (T / 10000.) ** 0.57 * 1.4e-4 + 1e-12) * np.exp(
-            -4.9e4 / T) + 2.6e4 * 1.38e-16 * 1.0 * (5.2e-9 * (T / 10000.) ** 0.57 * 1.4e-4 + 1e-12) * np.exp(
-            -2.6e4 / T))
-        Recombination_Cooling = 4.65E-30 * (T ** 0.94) * (param ** bet) * 1.4e-4
-
-    else:
-        param = G0 * np.sqrt(T) / (nH * ne / nH)
-        CII_Cooling = 92.0 * 1.38e-16 * 2.0 * (
-                (2.8E-7 * (T / 100.0) ** -0.5) * ne / nH + 8e-10 * (T / 100.0) ** 0.07) * 3.5e-4 * 0.4 * np.exp(
-            -92.0 / T)
-        OI_Cooling = 1e-26 * np.sqrt(T) * (24.0 * np.exp(-228.0 / T) + 7.0 * np.exp(-326.0 / T)) * 4.5E-4
-        H2_Cooling = 7.3E-19 * ne / nH * np.exp(-118400.0 / T)
-        CII_Line_Cooling = 6.2e4 * 1.38e-16 * 1.0 * (2.3e-8 * (T / 10000.0) ** -0.5 * ne / nH + 1e-12) * np.exp(
-            -6.2e4 / T) * 3.5e-4 * 0.4
-        OI_Line_Cooling = 4.5e-4 * (2.3e4 * 1.38e-16 / 3.0 * (5.1e-9 * (T / 10000.) ** 0.57 * ne / nH + 1e-12) * np.exp(
-            -2.3e4 / T) + 4.9e4 * 1.38e-16 / 3.0 * (2.5e-9 * (T / 10000.) ** 0.57 * ne / nH + 1e-12) * np.exp(
-            -4.9e4 / T) + 2.6e4 * 1.38e-16 * 1.0 * (5.2e-9 * (T / 10000.) ** 0.57 * ne / nH + 1e-12) * np.exp(
-            -2.6e4 / T))
-        Recombination_Cooling = 4.65E-30 * (T ** 0.94) * (param ** bet) * ne / nH
-    Total_Cooling = CII_Cooling + OI_Cooling + H2_Cooling + OI_Line_Cooling + CII_Line_Cooling + Recombination_Cooling
+    param = G0 * np.sqrt(T) / (nH * x)
+    Total_Cooling = CII_Cooling(nH, T, x) + OI_Cooling(nH, T, x) + H2_Cooling(nH, T, x) + OI_Line_Cooling(nH, T, x) + \
+                    CII_Line_Cooling(nH, T, x) + Recombination_Cooling(nH, T, x, param, bet)
     return Total_Cooling
 
 
 def heating(nH, T, x):
     G0 = 1.0 / 1.7
-    ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
-    if x >= 0.1:
-        param = G0 * np.sqrt(T) / (nH * 0.1)
-        epsilon = 4.9E-2 / (1.0 + (param / 1925.) ** 0.73) + 3.7E-2 * (T / 1e4) ** 0.7 / (1. + (param / 5e3))
-        UV_Heating = 1e-24 * epsilon * G0
-    elif x <= 1.4e-4:
-        param = G0 * np.sqrt(T) / (nH * 1.4e-4)
-        epsilon = 4.9E-2 / (1.0 + (param / 1925.) ** 0.73) + 3.7E-2 * (T / 1e4) ** 0.7 / (1. + (param / 5e3))
-        UV_Heating = 1e-24 * epsilon * G0
-    else:
-        param = G0 * np.sqrt(T) / (nH * ne / nH)
-        epsilon = 4.9E-2 / (1.0 + (param / 1925.) ** 0.73) + 3.7E-2 * (T / 1e4) ** 0.7 / (1. + (param / 5e3))
-        UV_Heating = 1e-24 * epsilon * G0
-    Total_Heating = UV_Heating
-    return Total_Heating
+    param = G0 * np.sqrt(T) / (nH * x)
+    return UV_Heating(nH, T, x, param, G0)
 
 
 def dCoolingdRho(nH, T, x):
-    G0 = 1.0 / 1.7
     bet = 0.74 / (T ** 0.068)
-    ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
     if x >= 0.1:
         dCII_CoolingdRho = 0
         dOI_CoolingdRho = 0
@@ -146,11 +103,8 @@ def dHeatingdRho(nH, T, x):
 
 
 def dCoolingdTemp(nH, T, x):
-    G0 = 1.0 / 1.7
     bet = 0.74 / (T ** 0.068)
-    ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
     if x >= 0.1:
-        param = G0 * np.sqrt(T) / (nH * 0.1)
         dCII_CoolingdTemp = (-4.976832e-25 / T ** 1.5 + 1.44215842722077e-28 / T ** 0.93) * np.exp(-92.0 / T) + 92.0 * (
                 9.953664e-25 / T ** 0.5 + 2.0602263246011e-27 * T ** 0.07) * np.exp(-92.0 / T) / T ** 2
         dOI_CoolingdTemp = 2.25e-30 * (
@@ -170,7 +124,6 @@ def dCoolingdTemp(nH, T, x):
                                               5.88235294117647 * T ** 0.5 / nH) ** bet * (-0.05032 * np.log(
             5.88235294117647 * T ** 0.5 / nH) / T ** 1.068 + 0.37 / T ** 1.068)
     elif x <= 1.4e-4:
-        param = G0 * np.sqrt(T) / (nH * 1.4e-4)
         dCII_CoolingdTemp = (-6.9675648e-28 / T ** 1.5 + 1.44215842722077e-28 / T ** 0.93) * np.exp(
             -92.0 / T) + 92.0 * (1.39351296e-27 / T ** 0.5 + 2.0602263246011e-27 * T ** 0.07) * np.exp(
             -92.0 / T) / T ** 2
@@ -191,7 +144,6 @@ def dCoolingdTemp(nH, T, x):
                                               4201.68067226891 * T ** 0.5 / nH) ** bet * (-0.05032 * np.log(
             4201.68067226891 * T ** 0.5 / nH) / T ** 1.068 + 0.37 / T ** 1.068)
     else:
-        param = G0 * np.sqrt(T) / (nH * ne / nH)
         dCII_CoolingdTemp = (-3.77714991648267e-27 / (T ** 1.25 * nH) + 1.44215842722077e-28 / T ** 0.93) * np.exp(
             -92.0 / T) + 92.0 * (1.51085996659307e-26 / (T ** 0.25 * nH) + 2.0602263246011e-27 * T ** 0.07) * np.exp(
             -92.0 / T) / T ** 2
@@ -211,8 +163,8 @@ def dCoolingdTemp(nH, T, x):
             -49000.0 / T) / T ** 2 + 11.7 * (1.48626761684194e-25 * T ** 0.82 / nH + 3.588e-24) * np.exp(
             -26000.0 / T) / T ** 2
         dRecombination_CoolingdTemp = 8.39926244762003e-33 * T ** 0.19 * (
-                    387.534026981419 * T ** 0.25) ** bet / nH + 7.05820373749582e-33 * T ** 1.19 * (
-                                                  387.534026981419 * T ** 0.25) ** bet * (-0.05032 * np.log(
+                387.534026981419 * T ** 0.25) ** bet / nH + 7.05820373749582e-33 * T ** 1.19 * (
+                                              387.534026981419 * T ** 0.25) ** bet * (-0.05032 * np.log(
             387.534026981419 * T ** 0.25) / T ** 1.068 + 0.185 / T ** 1.068) / nH
 
     dTotal_CoolingdTemp = dCII_CoolingdTemp + dOI_CoolingdTemp + dH2_CoolingdTemp + dCII_Line_CoolingdTemp + dOI_Line_CoolingdTemp + dRecombination_CoolingdTemp
@@ -220,24 +172,19 @@ def dCoolingdTemp(nH, T, x):
 
 
 def dHeatingdTemp(nH, T, x):
-    G0 = 1.0 / 1.7
-    ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
     if x >= 0.1:
-        param = G0 * np.sqrt(T) / (nH * 0.1)
         dUV_HeatingdTemp = -1.53524564744772e-28 * (T ** 0.5 / nH) ** 0.73 / (
                 T ** 1.0 * (0.0145927738365174 * (T ** 0.5 / nH) ** 0.73 + 1.0) ** 2) + 2.41463139322017e-29 / (
                                    T ** 0.3 * (
                                    0.00117647058823529 * T ** 0.5 / nH + 1.0)) - 2.02910201110938e-32 * T ** 0.2 / (
                                    nH * (0.00117647058823529 * T ** 0.5 / nH + 1.0) ** 2)
     elif x <= 1.4e-4:
-        param = G0 * np.sqrt(T) / (nH * 1.4e-4)
         dUV_HeatingdTemp = -5.9508038794533e-27 * (T ** 0.5 / nH) ** 0.73 / (
                 T ** 1.0 * ((T ** 0.5 / nH) ** 0.73 + 0.565634140065452) ** 2) + 2.41463139322017e-29 / (
                                    T ** 0.3 * (
                                    0.840336134453782 * T ** 0.5 / nH + 1.0)) - 1.44935857936385e-29 * T ** 0.2 / (
                                    nH * (0.840336134453782 * T ** 0.5 / nH + 1.0) ** 2)
     else:
-        param = G0 * np.sqrt(T) / (nH * ne / nH)
         dUV_HeatingdTemp = -1.63245709529796e-27 / (
                 T ** 0.8175 * (0.310335707241436 * T ** 0.1825 + 1.0) ** 2) + 2.41463139322017e-29 / (
                                    T ** 0.3 * (0.0775068053962838 * T ** 0.25 + 1.0)) - 6.68394162493118e-31 / (

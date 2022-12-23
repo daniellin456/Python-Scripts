@@ -1,5 +1,5 @@
-from module_plot import *
 from module_calculate import *
+from module_plot import *
 
 
 def main():
@@ -14,6 +14,13 @@ def main():
     T_array = np.logspace(T_start, T_end, T_count)
     balance_temperature = calculate_equilibrium_temperature(nH_array, T_array)
 
+    CII_cooling_rate = calculate_CII_cooling_rate(nH_array, T_array)
+    OI_cooling_rate = calculate_OI_cooling_rate(nH_array, T_array)
+    H2_cooling_rate = calculate_H2_cooling_rate(nH_array, T_array)
+    CII_line_cooling_rate = calculate_CII_line_cooling_rate(nH_array, T_array)
+    OI_line_cooling_rate = calculate_OI_line_cooling_rate(nH_array, T_array)
+    Recombination_cooling_rate = calculate_Recombination_cooling_rate(nH_array, T_array)
+    UV_heating_rate = calculate_UV_heating_rate(nH_array, T_array)
     m_matrix = calculate_m(nH_array, T_array, nH_count, T_count)
     n_matrix = calculate_n(nH_array, T_array, nH_count, T_count)
     Gamma1, Gamma2, Gamma3 = calculate_Gamma(m_matrix, n_matrix)
@@ -27,6 +34,11 @@ def main():
 
     plot_n(fig, ax1, extent, n_matrix)
     plot_equilibrium_temperature(fig, ax1, np.log10(nH_array), np.log10(balance_temperature))
+
+    plot_dividual_cooling_heating(fig, ax2, np.log10(nH_array), np.log10(CII_cooling_rate), np.log10(OI_cooling_rate),
+                                  np.log10(H2_cooling_rate), np.log10(CII_line_cooling_rate),
+                                  np.log(OI_line_cooling_rate), np.log10(Recombination_cooling_rate),
+                                  np.log10(UV_heating_rate))
 
     plot_Gamma1(fig, ax3, extent, Gamma1)
     plot_Gamma1_m1(fig, ax3, nH_mesh, T_mesh, Gamma1 - 1)

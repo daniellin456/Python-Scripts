@@ -16,6 +16,10 @@ def calculate_equilibrium_temperature(nH_array, T_array):
             T = T_array[j]
             ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
             x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
 
             total_cooling_rate[j] = np.abs(calculate_total_cooling_rate(nH, T, x))
 
@@ -33,6 +37,10 @@ def calculate_m(nH_array, T_array, nH_count, T_count):
             T = T_array[j]
             ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
             x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
             total_cooling_rate = np.abs(calculate_total_cooling_rate(nH, T, x))
             m_matrix[i, j] = nH / total_cooling_rate * np.abs(
                 heating(nH, T, x) + nH * dHeatingdRho(nH, T, x) - 2 * nH * cooling(nH, T, x) - nH ** 2 * dCoolingdRho(
@@ -48,6 +56,10 @@ def calculate_n(nH_array, T_array, nH_count, T_count):
             T = T_array[j]
             ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
             x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
             total_cooling_rate = np.abs(calculate_total_cooling_rate(nH, T, x))
 
             n_matrix[i, j] = T / total_cooling_rate * np.abs(
@@ -74,11 +86,16 @@ def calculate_dTotal_Lambda_dRho_by_np_diff(nH_array, T_array):
             T = T_array[j]
             ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
             x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
             Total_Lambda[i, j] = calculate_total_cooling_rate(nH, T, x)
 
     dTotal_Lambda_dRho_by_np_diff = np.zeros(shape=(len(T_array), len(nH_array) - 1))
     for i in range(0, len(T_array)):
-        dTotal_Lambda_dRho_by_np_diff[i] = nH_array[1:] / np.abs(Total_Lambda.T[i, 1:]) * np.abs(np.diff(Total_Lambda.T[i]) / np.diff(nH_array))
+        dTotal_Lambda_dRho_by_np_diff[i] = nH_array[1:] / np.abs(Total_Lambda.T[i, 1:]) * np.abs(
+            np.diff(Total_Lambda.T[i]) / np.diff(nH_array))
     return dTotal_Lambda_dRho_by_np_diff
 
 
@@ -90,12 +107,17 @@ def calculate_dTotal_Lambda_dRho_by_analytical(nH_array, T_array):
             T = T_array[j]
             ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
             x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
             Lambda = calculate_total_cooling_rate(nH, T, x)
             dTotal_Lambda_dRho_by_analytical[i, j] = nH / np.abs(Lambda) * np.abs(
                 heating(nH, T, x) + nH * dHeatingdRho(nH, T, x) - 2 * nH * cooling(nH, T, x) - nH ** 2 * dCoolingdRho(
                     nH, T, x))
 
     return dTotal_Lambda_dRho_by_analytical.T
+
 
 def calculate_ionization(nH_array, T_array):
     x = np.zeros(shape=(len(nH_array), len(T_array)))
@@ -123,6 +145,10 @@ def calculate_dGamma_dRho_by_np_diff(nH_array, T_array):
             T = T_array[j]
             ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
             x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
             Gamma[i, j] = heating(nH, T, x)
 
     dGamma_dRho_by_np_diff = np.zeros(shape=(len(T_array), len(nH_array) - 1))
@@ -140,6 +166,10 @@ def calculate_dGamma_dRho_by_analytical(nH_array, T_array):
             T = T_array[j]
             ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
             x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
             dGamma_dRho_by_analytical[i, j] = dHeatingdRho(nH, T, x)
 
     return dGamma_dRho_by_analytical.T
@@ -153,6 +183,10 @@ def calculate_dLambda_dRho_by_np_diff(nH_array, T_array):
             T = T_array[j]
             ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
             x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
             Lambda[i, j] = cooling(nH, T, x)
 
     dLambda_dRho_by_np_diff = np.zeros(shape=(len(T_array), len(nH_array) - 1))
@@ -170,5 +204,41 @@ def calculate_dLambda_dRho_by_analytical(nH_array, T_array):
             T = T_array[j]
             ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
             x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
             dLambda_dRho_by_analytical[i, j] = dCoolingdRho(nH, T, x)
     return dLambda_dRho_by_analytical.T
+
+
+def calculate_CII_cooling_rate(nH_array, T_array):
+    return
+
+
+def calculate_CII_cooling_rate(nH_array, T_array):
+    return
+
+
+def calculate_OI_cooling_rate(nH_array, T_array):
+    return
+
+
+def calculate_H2_cooling_rate(nH_array, T_array):
+    return
+
+
+def calculate_CII_line_cooling_rate(nH_array, T_array):
+    return
+
+
+def calculate_OI_line_cooling_rate(nH_array, T_array):
+    return
+
+
+def calculate_Recombination_cooling_rate(nH_array, T_array):
+    return
+
+
+def calculate_UV_heating_rate(nH_array, T_array):
+    return

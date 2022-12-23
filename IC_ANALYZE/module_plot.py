@@ -1,6 +1,4 @@
-import numpy as np
 from matplotlib.colors import *
-import matplotlib.pyplot as plt
 
 
 def plot_equilibrium_temperature(fig, ax, nH_array, balance_temperature):
@@ -100,6 +98,7 @@ def plot_Gamma3_m1(fig, ax, nH_mesh, T_mesh, Gamma3_m1):
     ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma3_m1.T, color="white", density=0.5)
     return
 
+
 def plot_dLambda_dRho_by_np_diff(fig, ax, nH_array, T_array, dLambda_dRho_by_np_diff):
     for i in range(0, len(T_array)):
         ax.plot(np.log10(nH_array[1:]), np.log10(np.abs(dLambda_dRho_by_np_diff[i])), label="T =" + str(T_array[i]))
@@ -154,4 +153,8 @@ def plot_ionization(fig, ax, nH_array, T_array, ionization):
         ax_ionization.plot(np.log10(nH_array), np.log10(ionization[i]), label="T =" + str(T_array[i]), linestyle='--')
     ax_ionization.set_ylabel('log10 ionization')
     ax_ionization.legend(loc="center right")
+    return
+
+
+def plot_dividual_cooling_heating():
     return

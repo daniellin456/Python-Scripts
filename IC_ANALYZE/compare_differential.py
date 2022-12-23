@@ -1,5 +1,5 @@
-from module_plot import *
 from module_calculate import *
+from module_plot import *
 
 
 def main():
