@@ -156,5 +156,18 @@ def plot_ionization(fig, ax, nH_array, T_array, ionization):
     return
 
 
-def plot_dividual_cooling_heating():
+def plot_individual_cooling_heating(ax, nH_array, T, CII_cooling_rate, OI_cooling_rate, H2_cooling_rate,
+                                    CII_line_cooling_rate, OI_line_cooling_rate, Recombination_cooling_rate,
+                                    UV_heating_rate):
+    ax.plot(np.log10(nH_array), np.log10(CII_cooling_rate), label="CII", linestyle="--")
+    ax.plot(np.log10(nH_array), np.log10(OI_cooling_rate), label="OI", linestyle="--")
+    ax.plot(np.log10(nH_array), np.log10(H2_cooling_rate), label="H2", linestyle="--")
+    ax.plot(np.log10(nH_array), np.log10(CII_line_cooling_rate), label="CII line", linestyle="--")
+    ax.plot(np.log10(nH_array), np.log10(OI_line_cooling_rate), label="OI Line", linestyle="--")
+    ax.plot(np.log10(nH_array), np.log10(Recombination_cooling_rate), label="Rec", linestyle="--")
+    ax.plot(np.log10(nH_array), np.log10(UV_heating_rate), label="UV")
+    ax.set_title("T = " + str(T) + "K")
+    ax.set_xlabel(r"$\rm{log10 \; nH \; (cm^{-3})}$")
+    ax.set_ylabel(r"$\rm{log10} \; n\Gamma, \rm{log10} \; n^2 \Lambda$")
+    ax.legend(loc='lower right')
     return

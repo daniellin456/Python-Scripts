@@ -213,32 +213,118 @@ def calculate_dLambda_dRho_by_analytical(nH_array, T_array):
 
 
 def calculate_CII_cooling_rate(nH_array, T_array):
-    return
-
-
-def calculate_CII_cooling_rate(nH_array, T_array):
-    return
+    CII_cooling_rate = np.zeros(shape=(len(nH_array), len(T_array)))
+    for i in range(0, len(nH_array)):
+        for j in range(0, len(T_array)):
+            nH = nH_array[i]
+            T = T_array[j]
+            ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
+            x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
+            CII_cooling_rate[i, j] = nH ** 2 * CII_Cooling(nH, T, x)
+    return CII_cooling_rate
 
 
 def calculate_OI_cooling_rate(nH_array, T_array):
-    return
+    OI_cooling_rate = np.zeros(shape=(len(nH_array), len(T_array)))
+    for i in range(0, len(nH_array)):
+        for j in range(0, len(T_array)):
+            nH = nH_array[i]
+            T = T_array[j]
+            ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
+            x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
+            OI_cooling_rate[i, j] = nH ** 2 * OI_Cooling(nH, T, x)
+    return OI_cooling_rate
 
 
 def calculate_H2_cooling_rate(nH_array, T_array):
-    return
+    H2_cooling_rate = np.zeros(shape=(len(nH_array), len(T_array)))
+    for i in range(0, len(nH_array)):
+        for j in range(0, len(T_array)):
+            nH = nH_array[i]
+            T = T_array[j]
+            ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
+            x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
+            H2_cooling_rate[i, j] = nH ** 2 * H2_Cooling(nH, T, x)
+    return H2_cooling_rate
 
 
 def calculate_CII_line_cooling_rate(nH_array, T_array):
-    return
+    CII_line_cooling_rate = np.zeros(shape=(len(nH_array), len(T_array)))
+    for i in range(0, len(nH_array)):
+        for j in range(0, len(T_array)):
+            nH = nH_array[i]
+            T = T_array[j]
+            ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
+            x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
+            CII_line_cooling_rate[i, j] = nH ** 2 * CII_Line_Cooling(nH, T, x)
+    return CII_line_cooling_rate
 
 
 def calculate_OI_line_cooling_rate(nH_array, T_array):
-    return
+    OI_line_cooling_rate = np.zeros(shape=(len(nH_array), len(T_array)))
+    for i in range(0, len(nH_array)):
+        for j in range(0, len(T_array)):
+            nH = nH_array[i]
+            T = T_array[j]
+            ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
+            x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
+            OI_line_cooling_rate[i, j] = nH ** 2 * OI_Line_Cooling(nH, T, x)
+    return OI_line_cooling_rate
 
 
 def calculate_Recombination_cooling_rate(nH_array, T_array):
-    return
+    Recombination_cooling_rate = np.zeros(shape=(len(nH_array), len(T_array)))
+    G0 = 1.0 / 1.7
+    for i in range(0, len(nH_array)):
+        for j in range(0, len(T_array)):
+            nH = nH_array[i]
+            T = T_array[j]
+            ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
+            x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
+
+            bet = 0.74 / (T ** 0.068)
+            param = G0 * np.sqrt(T) / (nH * x)
+            Recombination_cooling_rate[i, j] = nH ** 2 * Recombination_Cooling(nH, T, x, param, bet)
+    return Recombination_cooling_rate
 
 
 def calculate_UV_heating_rate(nH_array, T_array):
-    return
+    UV_heating_rate = np.zeros(shape=(len(nH_array), len(T_array)))
+    G0 = 1.0 / 1.7
+    for i in range(0, len(nH_array)):
+        for j in range(0, len(T_array)):
+            nH = nH_array[i]
+            T = T_array[j]
+            ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
+            x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
+            param = G0 * np.sqrt(T) / (nH * x)
+            UV_heating_rate[i, j] = nH * UV_Heating(nH, T, x, param, G0)
+    return UV_heating_rate
