@@ -4,17 +4,27 @@ from module_calculate import *
 from module_plot import *
 
 
+def plot_slope_line(ax, slope, intercepts):
+    xlim = ax.get_xlim()
+    ylim = ax.get_ylim()
+    y_vals = np.array(xlim)
+    for intercept in intercepts:
+        x_vals = 1 / slope * (y_vals - intercept)
+        ax.plot(x_vals, y_vals, linestyle=':', color='black')
+    ax.set_xlim(xlim)
+    ax.set_ylim(ylim)
+
+
 def main():
     nH_start = -2
     nH_end = 10
-    nH_count = 500
+    nH_count = 1000
     T_start = 0
     T_end = 4
     T_count = 500
 
     nH_array = np.logspace(nH_start, nH_end, nH_count)
     T_array = np.logspace(T_start, T_end, T_count)
-    nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
 
     balance_temperature = calculate_equilibrium_temperature(nH_array, T_array)
 
@@ -40,6 +50,10 @@ def main():
 
     plot_Gamma2(fig, ax4, extent, Gamma2)
     plot_Gamma2_m1(fig, ax4, nH_mesh, T_mesh, Gamma2 - 1)
+    plot_Gamma2_contour(fig, ax4, nH_mesh, T_mesh, Gamma2)
+    plot_slope_line(ax4, 2 / 3, np.arange(-6, 4, 2))
+    # plot_slope_line(ax4, 1 / 3, np.arange(-6, 4, 1))
+    # plot_slope_line(ax4, 0, np.arange(-6, 4, 1))
     plot_equilibrium_temperature(fig, ax4, np.log10(nH_array), np.log10(balance_temperature))
 
     plot_Gamma3(fig, ax5, extent, Gamma3)
