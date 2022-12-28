@@ -108,6 +108,12 @@ def plot_Gamma3_m1(fig, ax, nH_mesh, T_mesh, Gamma3_m1):
     return
 
 
+def plot_Gamma2_contour(fig, ax, nH_mesh, T_mesh, Gamma2):
+    CS = ax.contour(nH_mesh, T_mesh, Gamma2.T, levels=[1, 4 / 3, 7 / 5, 5 / 3, 1.9, 2.0])
+    ax.clabel(CS, CS.levels, inline=True, fontsize=10)
+    return
+
+
 def plot_dLambda_dRho_by_np_diff(fig, ax, nH_array, T_array, dLambda_dRho_by_np_diff):
     for i in range(0, len(T_array)):
         ax.plot(np.log10(nH_array[1:]), np.log10(np.abs(dLambda_dRho_by_np_diff[i])), label="T =" + str(T_array[i]))
