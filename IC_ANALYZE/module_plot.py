@@ -41,6 +41,12 @@ def plot_m(fig, ax, extent, m_matrix):
     return
 
 
+def plot_m_contour(fig, ax, nH_mesh, T_mesh, m_matrix):
+    CS = ax.contour(nH_mesh, T_mesh, m_matrix.T, levels=[2])
+    ax.clabel(CS, CS.levels, inline=True, fontsize=10)
+    return
+
+
 def plot_n(fig, ax, extent, n_matrix):
     print("Extrema of n: min:%24.14e, max: %24.14e" % (np.min(n_matrix), np.max(n_matrix)))
     im = ax.imshow(n_matrix.T, origin='lower', cmap="rainbow", norm=LogNorm(vmin=1e-2, vmax=1e2), extent=extent)
@@ -48,6 +54,12 @@ def plot_n(fig, ax, extent, n_matrix):
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
     fig.colorbar(im, ax=ax, extend='both', label='n')
+    return
+
+
+def plot_n_contour(fig, ax, nH_mesh, T_mesh, n_matrix):
+    CS = ax.contour(nH_mesh, T_mesh, n_matrix.T, levels=[0.5, 1])
+    ax.clabel(CS, CS.levels, inline=True, fontsize=10)
     return
 
 

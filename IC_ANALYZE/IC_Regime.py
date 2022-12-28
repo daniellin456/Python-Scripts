@@ -1,18 +1,21 @@
+import matplotlib.pyplot as plt
+
 from module_calculate import *
 from module_plot import *
-import matplotlib.pyplot as plt
 
 
 def main():
     nH_start = -2
     nH_end = 10
-    nH_count = 2000
+    nH_count = 500
     T_start = 0
     T_end = 4
     T_count = 500
 
     nH_array = np.logspace(nH_start, nH_end, nH_count)
     T_array = np.logspace(T_start, T_end, T_count)
+    nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
+
     balance_temperature = calculate_equilibrium_temperature(nH_array, T_array)
 
     m_matrix = calculate_m(nH_array, T_array, nH_count, T_count)
@@ -24,9 +27,11 @@ def main():
     nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
 
     plot_m(fig, ax0, extent, m_matrix)
+    plot_m_contour(fig, ax0, nH_mesh, T_mesh, m_matrix)
     plot_equilibrium_temperature(fig, ax0, np.log10(nH_array), np.log10(balance_temperature))
 
     plot_n(fig, ax1, extent, n_matrix)
+    plot_n_contour(fig, ax1, nH_mesh, T_mesh, n_matrix)
     plot_equilibrium_temperature(fig, ax1, np.log10(nH_array), np.log10(balance_temperature))
 
     plot_Gamma1(fig, ax3, extent, Gamma1)
