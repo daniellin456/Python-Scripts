@@ -7,9 +7,9 @@ from module_plot import *
 def plot_slope_line(ax, slope, intercepts):
     xlim = ax.get_xlim()
     ylim = ax.get_ylim()
-    y_vals = np.array(xlim)
+    x_vals = np.array(xlim)
     for intercept in intercepts:
-        x_vals = 1 / slope * (y_vals - intercept)
+        y_vals = intercept + slope * x_vals
         ax.plot(x_vals, y_vals, linestyle=':', color='black')
     ax.set_xlim(xlim)
     ax.set_ylim(ylim)
