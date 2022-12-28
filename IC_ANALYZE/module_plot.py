@@ -94,17 +94,17 @@ def plot_Gamma3(fig, ax, extent, Gamma3):
 
 
 def plot_Gamma1_m1(fig, ax, nH_mesh, T_mesh, Gamma1_m1):
-    ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma1_m1.T, color="white", density=0.5)
+    ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma1_m1.T, color="white", density=1, arrowsize=0)
     return
 
 
 def plot_Gamma2_m1(fig, ax, nH_mesh, T_mesh, Gamma2_m1):
-    ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma2_m1.T, color="white", density=0.5)
+    ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma2_m1.T, color="white", density=1, arrowsize=0)
     return
 
 
 def plot_Gamma3_m1(fig, ax, nH_mesh, T_mesh, Gamma3_m1):
-    ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma3_m1.T, color="white", density=0.5)
+    ax.streamplot(nH_mesh, T_mesh, np.ones(shape=nH_mesh.shape), Gamma3_m1.T, color="white", density=1, arrowsize=0)
     return
 
 
