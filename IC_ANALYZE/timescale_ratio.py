@@ -1,5 +1,3 @@
-import matplotlib.pyplot as plt
-
 from IC_Regime import *
 
 kb = 1.3606e-16
@@ -12,10 +10,10 @@ mp = 1.66e-24
 def main():
     nH_start = -2
     nH_end = 10
-    nH_count = 100
+    nH_count = 500
     T_start = 0
     T_end = 4
-    T_count = 100
+    T_count = 500
 
     nH_array = np.logspace(nH_start, nH_end, nH_count)
     T_array = np.logspace(T_start, T_end, T_count)
@@ -39,7 +37,8 @@ def main():
                     norm=LogNorm(vmin=1e-3, vmax=1e3))
     plt.plot(np.log10(nH_array), np.log10(calculate_equilibrium_temperature(nH_array, T_array)), color="black",
              linestyle="--")
-    plt.contour(nH_mesh, T_mesh, timescale_ratio.T, levels=[0.001, 0.01, 0.1])
+    CS = plt.contour(nH_mesh, T_mesh, timescale_ratio.T, levels=[0.001, 0.01, 0.1])
+    plt.clabel(CS, CS.levels, inline=True, fontsize=10)
     plt.colorbar(sc)
     plt.savefig("timescale_ratio.pdf", dpi=600)
     plt.show()
