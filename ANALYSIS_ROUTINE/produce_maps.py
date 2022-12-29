@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # This module contains functions for imaging the ramses output
-
+import matplotlib
+matplotlib.use('Agg')
 ##### pymses dependences ##################################################################
 import pymses
 from pymses.filters import PointFunctionFilter
