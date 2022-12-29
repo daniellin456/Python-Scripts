@@ -28,6 +28,7 @@ def main():
                                         Recombination_cooling_rate.T[i], UV_heating_rate.T[i])
 
     plt.tight_layout()
+    plt.savefig('cooling_rate_in_diff_temp.pdf', dpi=600)
     plt.show()
 
     return
