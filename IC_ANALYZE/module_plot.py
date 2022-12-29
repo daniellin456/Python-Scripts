@@ -33,7 +33,7 @@ def plot_dTotal_Lambda_dRho_by_analytical(fig, ax, nH_array, T_array, dTotal_Lam
 def plot_m(fig, ax, extent, m_matrix):
     print("Extrema of m: min:%24.14e, max: %24.14e" % (np.min(m_matrix), np.max(m_matrix)))
 
-    im = ax.imshow(m_matrix.T, origin='lower', cmap="rainbow", vmin=0.1, vmax=3, extent=extent)
+    im = ax.imshow(m_matrix.T, origin='lower', cmap="rainbow", vmin=0.1, vmax=3, extent=extent, interpolation="none")
     ax.set_title("m(nH, T)")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
@@ -49,7 +49,7 @@ def plot_m_contour(fig, ax, nH_mesh, T_mesh, m_matrix):
 
 def plot_n(fig, ax, extent, n_matrix):
     print("Extrema of n: min:%24.14e, max: %24.14e" % (np.min(n_matrix), np.max(n_matrix)))
-    im = ax.imshow(n_matrix.T, origin='lower', cmap="rainbow", vmin=0.1, vmax=2, extent=extent)
+    im = ax.imshow(n_matrix.T, origin='lower', cmap="rainbow", vmin=0.1, vmax=2, extent=extent, interpolation="none")
     ax.set_title("n(nH, T)")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
@@ -65,7 +65,7 @@ def plot_n_contour(fig, ax, nH_mesh, T_mesh, n_matrix):
 
 def plot_Gamma1(fig, ax, extent, Gamma1):
     print("Extrema of Gamma1: min:%24.14e, max: %24.14e" % (np.min(Gamma1), np.max(Gamma1)))
-    im = ax.imshow(Gamma1.T, origin='lower', cmap="rainbow", vmin=-3, vmax=3, extent=extent)
+    im = ax.imshow(Gamma1.T, origin='lower', cmap="rainbow", vmin=-3, vmax=3, extent=extent, interpolation="none")
     ax.set_title(r"$\Gamma_1\rm{(nH,T)}$")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
@@ -75,7 +75,7 @@ def plot_Gamma1(fig, ax, extent, Gamma1):
 
 def plot_Gamma2(fig, ax, extent, Gamma2):
     print("Extrema of Gamma2: min:%24.14e, max: %24.14e" % (np.min(Gamma2), np.max(Gamma2)))
-    im = ax.imshow(Gamma2.T, origin="lower", cmap="rainbow", vmin=-3, vmax=3, extent=extent)
+    im = ax.imshow(Gamma2.T, origin="lower", cmap="rainbow", vmin=-3, vmax=3, extent=extent, interpolation="none")
     ax.set_title(r"$\Gamma_2\rm{(nH,T)}$")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
@@ -85,7 +85,7 @@ def plot_Gamma2(fig, ax, extent, Gamma2):
 
 def plot_Gamma3(fig, ax, extent, Gamma3):
     print("Extrema of Gamma3: min: %24.14e, max: %24.14e" % (np.min(Gamma3), np.max(Gamma3)))
-    im = ax.imshow(Gamma3.T, origin="lower", cmap="rainbow", vmin=-3, vmax=3, extent=extent)
+    im = ax.imshow(Gamma3.T, origin="lower", cmap="rainbow", vmin=-3, vmax=3, extent=extent, interpolation="none")
     ax.set_title(r"$\Gamma_3\rm{(nH,T)}$")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
@@ -109,7 +109,7 @@ def plot_Gamma3_m1(fig, ax, nH_mesh, T_mesh, Gamma3_m1):
 
 
 def plot_Gamma2_contour(fig, ax, nH_mesh, T_mesh, Gamma2):
-    CS = ax.contour(nH_mesh, T_mesh, Gamma2.T, levels=[1, 4 / 3, 7 / 5, 5 / 3, 1.9, 2.0])
+    CS = ax.contour(nH_mesh, T_mesh, Gamma2.T, levels=[5 / 3])
     ax.clabel(CS, CS.levels, inline=True, fontsize=10)
     return
 
