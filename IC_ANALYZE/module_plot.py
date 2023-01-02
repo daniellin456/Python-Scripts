@@ -37,7 +37,7 @@ def plot_m(fig, ax, extent, m_matrix):
     ax.set_title("m(nH, T)")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    fig.colorbar(im, ax=ax, extend='both', label='m')
+    fig.colorbar(im, ax=ax, extend='both', label='m', location="bottom")
     return
 
 
@@ -53,7 +53,7 @@ def plot_n(fig, ax, extent, n_matrix):
     ax.set_title("n(nH, T)")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    fig.colorbar(im, ax=ax, extend='both', label='n')
+    fig.colorbar(im, ax=ax, extend='both', label='n', location="bottom")
     return
 
 
@@ -69,7 +69,7 @@ def plot_Gamma1(fig, ax, extent, Gamma1):
     ax.set_title(r"$\Gamma_1\rm{(nH,T)}$")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_1$", ticks=np.arange(-3, 3.5, 0.5))
+    fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_1$", ticks=np.arange(-3, 3.5, 0.5), location="bottom")
     return
 
 
@@ -79,7 +79,7 @@ def plot_Gamma2(fig, ax, extent, Gamma2):
     ax.set_title(r"$\Gamma_2\rm{(nH,T)}$")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_2$", ticks=np.arange(-3, 3.5, 0.5))
+    fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_2$", ticks=np.arange(-3, 3.5, 0.5), location="bottom")
     return
 
 
@@ -89,8 +89,8 @@ def plot_Gamma3(fig, ax, extent, Gamma3):
     ax.set_title(r"$\Gamma_3\rm{(nH,T)}$")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_3$", ticks=np.arange(-3, 3.5, 0.5))
-    return
+    fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_3$", ticks=np.arange(-3, 3.5, 0.5), location="bottom")
+    return im
 
 
 def plot_Gamma1_m1(fig, ax, nH_mesh, T_mesh, Gamma1_m1):
@@ -109,7 +109,7 @@ def plot_Gamma3_m1(fig, ax, nH_mesh, T_mesh, Gamma3_m1):
 
 
 def plot_Gamma2_contour(fig, ax, nH_mesh, T_mesh, Gamma2):
-    CS = ax.contour(nH_mesh, T_mesh, Gamma2.T, levels=[5 / 3])
+    CS = ax.contour(nH_mesh, T_mesh, Gamma2.T, levels=[1.67])
     ax.clabel(CS, CS.levels, inline=True, fontsize=10)
     return
 
@@ -171,9 +171,10 @@ def plot_ionization(fig, ax, nH_array, T_array, ionization):
     return
 
 
-def plot_individual_cooling_heating(ax, nH_array, T, CII_cooling_rate, OI_cooling_rate, H2_cooling_rate,
-                                    CII_line_cooling_rate, OI_line_cooling_rate, Recombination_cooling_rate,
-                                    UV_heating_rate):
+def plot_individual_cooling_rate_vs_nH(ax, nH_array, T, CII_cooling_rate, OI_cooling_rate, H2_cooling_rate,
+                                       CII_line_cooling_rate, OI_line_cooling_rate,
+                                       Recombination_cooling_rate,
+                                       UV_heating_rate):
     ax.plot(np.log10(nH_array), np.log10(CII_cooling_rate), label="CII", linestyle="--")
     ax.plot(np.log10(nH_array), np.log10(OI_cooling_rate), label="OI", linestyle="--")
     ax.plot(np.log10(nH_array), np.log10(H2_cooling_rate), label="H2", linestyle="--")
@@ -185,4 +186,21 @@ def plot_individual_cooling_heating(ax, nH_array, T, CII_cooling_rate, OI_coolin
     ax.set_xlabel(r"$\rm{log10 \; nH \; (cm^{-3})}$")
     ax.set_ylabel(r"$\rm{log10} \; n\Gamma, \rm{log10} \; n^2 \Lambda$")
     ax.legend(loc='lower right')
+    return
+
+
+def plot_individual_cooling_rate_vs_T(ax, nH, T_array, CII_cooling_rate, OI_cooling_rate, H2_cooling_rate,
+                                      CII_line_cooling_rate, OI_line_cooling_rate, Recombination_cooling_rate,
+                                      UV_heating_rate):
+    ax.plot(np.log(T_array), np.log10(CII_cooling_rate), label="CII", linestyle="--")
+    ax.plot(np.log(T_array), np.log10(OI_cooling_rate), label="OI", linestyle="--")
+    ax.plot(np.log(T_array), np.log10(H2_cooling_rate), label="H2", linestyle="--")
+    ax.plot(np.log(T_array), np.log10(CII_line_cooling_rate), label="CII Line", linestyle="--")
+    ax.plot(np.log(T_array), np.log10(OI_line_cooling_rate), label="OI Line", linestyle="--")
+    ax.plot(np.log(T_array), np.log10(Recombination_cooling_rate), label="Rec", linestyle="--")
+    ax.plot(np.log(T_array), np.log10(UV_heating_rate), label="UV", linestyle="--")
+    ax.set_title("nH = " + str(nH) + r"$\rm{cm^{-3}}$")
+    ax.set_xlabel(r"$\rm{log10 \; T \; (K)}$")
+    ax.set_ylabel(r"$\rm{log10} \; n\Gamma, \rm{log10} \; n^2 \Lambda$")
+    ax.legend(loc="lower right")
     return
