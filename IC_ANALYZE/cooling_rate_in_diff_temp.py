@@ -23,9 +23,10 @@ def main():
     for i in range(0, len(T_array)):
         ax = plt.subplot(3, 4, i + 1)
         T = T_array[i]
-        plot_individual_cooling_heating(ax, nH_array, T, CII_cooling_rate.T[i], OI_cooling_rate.T[i],
-                                        H2_cooling_rate.T[i], CII_line_cooling_rate.T[i], OI_line_cooling_rate.T[i],
-                                        Recombination_cooling_rate.T[i], UV_heating_rate.T[i])
+        plot_individual_cooling_rate_vs_nH(ax, nH_array, T, CII_cooling_rate.T[i], OI_cooling_rate.T[i],
+                                           H2_cooling_rate.T[i], CII_line_cooling_rate.T[i],
+                                           OI_line_cooling_rate.T[i],
+                                           Recombination_cooling_rate.T[i], UV_heating_rate.T[i])
 
     plt.tight_layout()
     plt.savefig('cooling_rate_in_diff_temp.pdf', dpi=600)
