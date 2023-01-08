@@ -67,10 +67,32 @@ def calculate_n(nH_array, T_array, nH_count, T_count):
     return n_matrix
 
 
+def calculate_a(m, n):
+    a = 1 - (3 - 2 * m) / (5 - 2 * n - 2 * m)
+    return a
+
+
+def calculate_b(m, n):
+    b = (3 - 2 * m) / (5 - 2 * n - 2 * m)
+    return b
+
+
+def calculate_c(m, n):
+    c = 2 * (3 - 2 * m) / (5 - 2 * n - 2 * m)
+    return c
+
+
+def calculate_d(m, n):
+    d = ((3 - 2 * m) / (5 - 2 * m - 2 * n) - 1) * 2
+    return d
+
+
 def calculate_Gamma(m, n):
     gamma = 5 / 3
-    c = 2 * (3 - 2 * m) / (5 - 2 * m - 2 * n)
-    d = ((3 - 2 * m) / (5 - 2 * m - 2 * n) - 1) * 2
+    # c = 2 * (3 - 2 * m) / (5 - 2 * m - 2 * n)
+    # d = ((3 - 2 * m) / (5 - 2 * m - 2 * n) - 1) * 2
+    c = calculate_c(m, n)
+    d = calculate_d(m, n)
     Gamma1 = (gamma * 2 * (d / 3 + 1) + (n - m) * (c - (gamma - 1) * d)) / (
             2 * (d / 3 + 1) + (n - 1) * (c - (gamma - 1) * d))
     Gamma2 = 1 + (3 - 2 * m) / (2 * (n - 1))
