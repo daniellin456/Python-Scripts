@@ -1,3 +1,5 @@
+from matplotlib import pyplot as plt
+
 from module_calculate import *
 from module_plot import *
 
