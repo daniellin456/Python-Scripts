@@ -28,8 +28,11 @@ def main():
                                           H2_cooling_rate[i], CII_line_cooling_rate[i], OI_line_cooling_rate[i],
                                           Recombination_cooling_rate[i], UV_heating_rate[i])
 
+        # ax.plot([0, 5], [-30, -25])
+        # ax.plot([0, 5], [-30, -20])
+
     plt.tight_layout()
-    plt.savefig('cooling_rate_in_diff_temp.pdf', dpi=600)
+    plt.savefig('cooling_rate_in_diff_density.pdf', dpi=600)
     plt.show()
 
     return
