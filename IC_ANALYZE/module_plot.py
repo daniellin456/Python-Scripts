@@ -2,7 +2,7 @@ from matplotlib.colors import *
 
 
 def plot_equilibrium_temperature(fig, ax, nH_array, balance_temperature):
-    ax.plot(nH_array, balance_temperature, linewidth=3, linestyle="--", color="black")
+    ax.plot(nH_array, balance_temperature, linewidth=1, linestyle="--", color="black")
     return
 
 
@@ -76,10 +76,10 @@ def plot_Gamma1(fig, ax, extent, Gamma1):
 def plot_Gamma2(fig, ax, extent, Gamma2):
     print("Extrema of Gamma2: min:%24.14e, max: %24.14e" % (np.min(Gamma2), np.max(Gamma2)))
     im = ax.imshow(Gamma2.T, origin="lower", cmap="rainbow", vmin=-3, vmax=3, extent=extent, interpolation="none")
-    ax.set_title(r"$\Gamma_2\rm{(nH,T)}$")
+    ax.set_title(r"$\Gamma \; \rm{(nH,T)}, \;\; \Gamma\rm{=1+(3-2m)/(2n-2)}$")
     ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_2$", ticks=np.arange(-3, 3.5, 0.5), location="bottom")
+    fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma$", ticks=np.arange(-3, 3.5, 0.5), location="bottom")
     return
 
 
@@ -192,15 +192,16 @@ def plot_individual_cooling_rate_vs_nH(ax, nH_array, T, CII_cooling_rate, OI_coo
 def plot_individual_cooling_rate_vs_T(ax, nH, T_array, CII_cooling_rate, OI_cooling_rate, H2_cooling_rate,
                                       CII_line_cooling_rate, OI_line_cooling_rate, Recombination_cooling_rate,
                                       UV_heating_rate):
-    ax.plot(np.log(T_array), np.log10(CII_cooling_rate), label="CII", linestyle="--")
-    ax.plot(np.log(T_array), np.log10(OI_cooling_rate), label="OI", linestyle="--")
-    ax.plot(np.log(T_array), np.log10(H2_cooling_rate), label="H2", linestyle="--")
-    ax.plot(np.log(T_array), np.log10(CII_line_cooling_rate), label="CII Line", linestyle="--")
-    ax.plot(np.log(T_array), np.log10(OI_line_cooling_rate), label="OI Line", linestyle="--")
-    ax.plot(np.log(T_array), np.log10(Recombination_cooling_rate), label="Rec", linestyle="--")
-    ax.plot(np.log(T_array), np.log10(UV_heating_rate), label="UV", linestyle="--")
+    ax.plot(np.log10(T_array), np.log10(CII_cooling_rate), label="CII", linestyle="--")
+    ax.plot(np.log10(T_array), np.log10(OI_cooling_rate), label="OI", linestyle="--")
+    ax.plot(np.log10(T_array), np.log10(H2_cooling_rate), label="H2", linestyle="--")
+    ax.plot(np.log10(T_array), np.log10(CII_line_cooling_rate), label="CII Line", linestyle="--")
+    ax.plot(np.log10(T_array), np.log10(OI_line_cooling_rate), label="OI Line", linestyle="--")
+    ax.plot(np.log10(T_array), np.log10(Recombination_cooling_rate), label="Rec", linestyle="--")
+    ax.plot(np.log10(T_array), np.log10(UV_heating_rate), label="UV", linestyle="-")
     ax.set_title("nH = " + str(nH) + r"$\rm{cm^{-3}}$")
+    ax.set_ylim(-30, -10)
     ax.set_xlabel(r"$\rm{log10 \; T \; (K)}$")
     ax.set_ylabel(r"$\rm{log10} \; n\Gamma, \rm{log10} \; n^2 \Lambda$")
-    ax.legend(loc="lower right")
+    ax.legend(loc="upper right")
     return
