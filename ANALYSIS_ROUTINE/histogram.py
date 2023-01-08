@@ -247,6 +247,19 @@ def make_histogram(read_dir, write_dir, output):
                 format(output, '05') + ".pdf", bbox_inches='tight')
     #plt.show()
     plt.clf()
+
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    plot_density_temperature_2d_histogram_imshow(fig, ax, density_temperature_2d_histogram.T *
+                                                 units["unit_M_Msun"], density_edges + np.log10(units["unit_D_Hcc"]),
+                                                 temperature_edges)
+    plot_theoretical_equilibrium_temperature(
+        ax, np.log10(nH), np.log10(equilibrium_temperature))
+
+    plt.savefig(write_dir + '/rho_vs_T' +
+                format(output, '05') + ".pdf", bbox_inches='tight')
+    # plt.show()
+    plt.clf()
+
     return
 
 
