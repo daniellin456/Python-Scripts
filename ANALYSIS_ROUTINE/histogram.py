@@ -156,7 +156,7 @@ def plot_density_temperature_2d_histogram_imshow(fig, ax, hist_2d, density_edges
 
 
 def plot_theoretical_equilibrium_temperature(ax, x, y):
-    ax.plot(x, y, '-', lw=2, color='black', alpha=0.2)
+    ax.plot(x, y, '--', lw=2, color='black')
     ax.tick_params(which='major', width=1, length=5)
     ax.tick_params(which='minor', width=1, length=3)
     return
@@ -209,8 +209,8 @@ def make_histogram(read_dir, write_dir, output):
     enclosed_mass = np.cumsum(mass_histogram)
 
     # Calculate Density vs. Temperature 2D histogram
-    density_bins = np.linspace(-2, 8, 128)
-    temparture_bins = np.linspace(-2, 8, 128)
+    density_bins = np.linspace(-2, 10, 128)
+    temparture_bins = np.linspace(0, 4, 128)
     density_temperature_2d_histogram, density_edges, temperature_edges = np.histogram2d(
         np.log10(density), np.log10(temperature), weights=mass, bins=(density_bins, temparture_bins))
     density_temperature_2d_histogram = np.where(
