@@ -87,17 +87,23 @@ def calculate_d(m, n):
     return d
 
 
-def calculate_Gamma(m, n):
+def calculate_Gamma1(m, n):
     gamma = 5 / 3
-    # c = 2 * (3 - 2 * m) / (5 - 2 * m - 2 * n)
-    # d = ((3 - 2 * m) / (5 - 2 * m - 2 * n) - 1) * 2
     c = calculate_c(m, n)
     d = calculate_d(m, n)
     Gamma1 = (gamma * 2 * (d / 3 + 1) + (n - m) * (c - (gamma - 1) * d)) / (
             2 * (d / 3 + 1) + (n - 1) * (c - (gamma - 1) * d))
+    return Gamma1
+
+
+def calculate_Gamma2(m, n):
     Gamma2 = 1 + (3 - 2 * m) / (2 * (n - 1))
+    return Gamma2
+
+
+def calculate_Gamma3(m, n):
     Gamma3 = 1 + (2 - m) / (n - 1)
-    return Gamma1, Gamma2, Gamma3
+    return Gamma3
 
 
 def calculate_dTotal_Lambda_dRho_by_np_diff(nH_array, T_array):
