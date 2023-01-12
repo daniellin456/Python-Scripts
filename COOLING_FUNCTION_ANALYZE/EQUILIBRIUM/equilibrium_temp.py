@@ -1,9 +1,10 @@
 import numpy as np
 
 G0 = 1. / 1.7
+
 G0 = 1.0 * G0
-Low_T_array = np.logspace(-2, 10, 1000)
-nH_array = np.logspace(0, 4, 1000)
+Low_T_array = np.logspace(0, 4, 1000)
+nH_array = np.logspace(-2, 10, 1000)
 
 
 def Cooling_low(nH, x, T):
@@ -65,6 +66,6 @@ np.save('/data/daniellin/PYTHON_SCRIPTS/COOLING_FUNCTION_ANALYZE/EQUILIBRIUM/equ
 # plt.tick_params(which='minor',width = 1, length = 3 )
 # plt.plot()
 # plt.legend()
-# plt.savefig('/data/dadiff_G0_equilibrium_temp.pdf', dpi=600 )
+# plt.savefig('./diff_G0_equilibrium_temp.pdf', dpi=600 )
 
 # plt.show()
