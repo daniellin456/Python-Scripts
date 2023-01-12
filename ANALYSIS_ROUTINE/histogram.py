@@ -162,6 +162,72 @@ def plot_theoretical_equilibrium_temperature(ax, x, y):
     return
 
 
+def plot_integrated(data, write_dir, nH, bins_center, density_edges, temperature_edges, density_histogram, temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram, equilibrium_temperature):
+    # Plot Figures
+    fig, ((ax0, ax1, ax2), (ax3, ax4, ax5)) = plt.subplots(
+        nrows=2, ncols=3, figsize=(21, 12))
+    fig.suptitle("No. " + str(output) + " Time: " +
+                 str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
+
+    plot_density_profile(
+        ax0, bins_center * units['unit_L_pc'], density_histogram * units["unit_D_Hcc"])
+    plot_temperature_profile(
+        ax1, bins_center * units['unit_L_pc'], temperature_histogram)
+    plot_radial_velocity_profile(
+        ax2, bins_center * units['unit_L_pc'], radial_velocity_histogram * units["unit_V_si"])
+    plot_enclosed_mass(
+        ax3, bins_center * units['unit_L_pc'], enclosed_mass * units["unit_M_Msun"])
+
+    plot_density_temperature_2d_histogram_imshow(fig, ax4, density_temperature_2d_histogram.T *
+                                                 units["unit_M_Msun"], density_edges + np.log10(units["unit_D_Hcc"]),
+                                                 temperature_edges)
+    plot_theoretical_equilibrium_temperature(
+        ax4, np.log10(nH), np.log10(equilibrium_temperature))
+
+    plt.tight_layout(rect=[0.01, 0.01, 0.99, 0.99], pad=1.8)
+    plt.savefig(write_dir + '/profiles_' +
+                format(output, '05') + ".pdf", bbox_inches='tight')
+    return
+
+
+def plot_single(data, write_dir, nH, bins_center, density_edges, temperature_edges, density_histogram, temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram, equilibrium_temperature):
+
+
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig.suptitle("No. " + str(output) + " Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
+    fig.title("Density histogram")
+    plot_density_profile(ax, bins_center * units['unit_L_pc'], density_histogram * units["unit_D_Hcc"])
+    plt.savefig(write_dir + '/dens_history' + format(output, '05') + ".pdf", bbox_inches='tight')
+
+
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig.suptitle("No. " + str(output) + " Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
+    fig.title("Temperature histogram")
+    plot_temperature_profile(ax, bins_center * units['unit_L_pc'], temperature_histogram)
+    plt.savefig(write_dir + '/temp_hist' + format(output, '05') + ".pdf", bbox_inches='tight')
+
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig.suptitle("No. " + str(output) + " Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
+    fig.title("Radial velocity histogram")
+    plot_radial_velocity_profile(ax, bins_center * units['unit_L_pc'], radial_velocity_histogram * units["unit_V_si"])
+    plt.savefig(write_dir + '/vel_hist' + format(output, '05') + ".pdf", bbox_inches='tight')
+
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig.suptitle("No. " + str(output) + " Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
+    fig.title("Enclosed mass")
+    plot_enclosed_mass(ax, bins_center * units['unit_L_pc'], enclosed_mass * units["unit_M_Msun"])
+    plt.savefig(write_dir + '/mass_' + format(output, '05') + ".pdf", bbox_inches='tight')
+
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig.suptitle("No. " + str(output) + " Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
+    fig.title("Density-Temperature relation")
+    plot_density_temperature_2d_histogram_imshow(fig, ax, density_temperature_2d_histogram.T *
+                                                 units["unit_M_Msun"], density_edges + np.log10(units["unit_D_Hcc"]),
+                                                 temperature_edges)
+    plot_theoretical_equilibrium_temperature(ax, np.log10(nH), np.log10(equilibrium_temperature))
+    plt.savefig(write_dir + '/rho_vs_temp_profiles_' + format(output, '05') + ".pdf", bbox_inches='tight')
+    return
+
 def make_histogram(read_dir, write_dir, output):
 
     global units
@@ -248,17 +314,20 @@ def make_histogram(read_dir, write_dir, output):
     #plt.show()
     plt.clf()
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
-    plot_density_temperature_2d_histogram_imshow(fig, ax, density_temperature_2d_histogram.T *
-                                                 units["unit_M_Msun"], density_edges + np.log10(units["unit_D_Hcc"]),
-                                                 temperature_edges)
-    plot_theoretical_equilibrium_temperature(
-        ax, np.log10(nH), np.log10(equilibrium_temperature))
+    plot_integrated(data, write_dir, nH, bins_center, density_edges, temperature_edges, density_histogram, temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram, equilibrium_temperature)
+    plot_single(data, write_dir, nH, bins_center, density_edges, temperature_edges, density_histogram, temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram, equilibrium_temperature)
 
-    plt.savefig(write_dir + '/rho_vs_T' +
-                format(output, '05') + ".pdf", bbox_inches='tight')
+    # fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    # plot_density_temperature_2d_histogram_imshow(fig, ax, density_temperature_2d_histogram.T *
+    #                                              units["unit_M_Msun"], density_edges + np.log10(units["unit_D_Hcc"]),
+    #                                              temperature_edges)
+    # plot_theoretical_equilibrium_temperature(
+    #     ax, np.log10(nH), np.log10(equilibrium_temperature))
+    #
+    # plt.savefig(write_dir + '/rho_vs_T' +
+    #             format(output, '05') + ".pdf", bbox_inches='tight')
     # plt.show()
-    plt.clf()
+    # plt.clf()
 
     return
 
