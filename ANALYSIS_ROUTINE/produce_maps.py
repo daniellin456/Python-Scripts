@@ -43,7 +43,7 @@ def local_dir(dir):
     ldirs = ['/data/']
     for ldir in ldirs:
         readdir = dir
-        writedir = dir + '/figure'
+        writedir = dir + '/figures'
         #if ldir == ldirs[3]:  writedir = ldir[2]+'ylee/'+dir
         if os.path.exists(readdir):
             if not os.path.exists(writedir):
