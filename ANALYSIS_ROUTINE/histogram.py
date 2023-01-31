@@ -307,5 +307,5 @@ if __name__ == '__main__':
     read_directory, write_directory = local_dir(args.input, args.output)
     outputs = search_valid_outputs(read_directory)
 
-    for output in outputs[0:1]:
+    for output in outputs:
         make_histogram(read_directory, write_directory, output)
