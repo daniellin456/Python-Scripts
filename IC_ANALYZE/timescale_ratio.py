@@ -33,13 +33,17 @@ def main():
             timescale_ratio[i, j] = cooling_heating_timescale / free_fall_Timescale
     print(
         "Extrema of  timescale_ratio, min: %24.14e, max: %24.14e" % (np.min(timescale_ratio), np.max(timescale_ratio)))
+    plt.figure(figsize=(5, 3))
     sc = plt.imshow(timescale_ratio.T, origin='lower', extent=(nH_start, nH_end, T_start, T_end), cmap="RdBu",
                     norm=LogNorm(vmin=1e-3, vmax=1e3))
     plt.plot(np.log10(nH_array), np.log10(calculate_equilibrium_temperature(nH_array, T_array)), color="black",
              linestyle="--")
-    CS = plt.contour(nH_mesh, T_mesh, timescale_ratio.T, levels=[0.001, 0.01, 0.1])
+    CS = plt.contour(nH_mesh, T_mesh, timescale_ratio.T, levels=[0.001, 0.01, 0.1], colors=('cyan', 'yellow', 'green'))
     plt.clabel(CS, CS.levels, inline=True, fontsize=10)
-    plt.colorbar(sc)
+    plt.title(r"$t_{cooling} / t_{ff}$")
+    plt.xlabel(r"$\rm{log_{10}} n_H \; (\rm{cm^{-3}})$")
+    plt.ylabel(r"$\rm{log_{10}} T \; (\rm{K})$")
+    plt.colorbar(sc, location="bottom", pad=0.3)
     plt.savefig("timescale_ratio.pdf", dpi=600)
     plt.show()
 

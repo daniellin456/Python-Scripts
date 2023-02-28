@@ -19,16 +19,21 @@ def main():
     Recombination_cooling_rate = calculate_Recombination_cooling_rate(nH_array, T_array)
     UV_heating_rate = calculate_UV_heating_rate(nH_array, T_array)
 
-    plt.figure(figsize=(20, 15))
-    for i in range(0, len(T_array)):
-        ax = plt.subplot(3, 4, i + 1)
+    fig, axs = plt.subplots(nrows=3, ncols=4, sharex=True, sharey=True, figsize=(12, 9))
+    for i, ax in zip(range(0, len(nH_array)), axs.ravel()):
         T = T_array[i]
         plot_individual_cooling_rate_vs_nH(ax, nH_array, T, CII_cooling_rate.T[i], OI_cooling_rate.T[i],
                                            H2_cooling_rate.T[i], CII_line_cooling_rate.T[i],
                                            OI_line_cooling_rate.T[i],
                                            Recombination_cooling_rate.T[i], UV_heating_rate.T[i])
 
-    plt.tight_layout()
+    plt.suptitle(
+        r"$\rm{log_{10}} \; n\Gamma, \rm{log_{10}} \; n^2 \Lambda$" + " vs " + r"$n_H$" + " in different temperature",
+        fontsize=16)
+    fig.text(0.5, 0.01, r"$\rm{log_{10} \; T \; (K)}$", fontsize=14, ha='center')
+    fig.text(0.01, 0.5, r"$\rm{log_{10}} \; n\Gamma, \rm{log_{10}} \; n^2 \Lambda \; (\rm{ergs \; cm^{-3}\; s^{-1}})$",
+             va='center', rotation='vertical', fontsize=14)
+    plt.tight_layout(rect=(0.02, 0.02, 0.99, 0.99))
     plt.savefig('cooling_rate_in_diff_temp.pdf', dpi=600)
     plt.show()
 

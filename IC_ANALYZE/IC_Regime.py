@@ -47,41 +47,53 @@ def intergrated_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamm
 
 
 def individual_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3, a, b, c, d, balance_temperature):
+    fig_x_length = 5
+    fig_y_length = 3
     gamma = 5 / 3
     extent = [np.log10(nH_array[0]), np.log10(nH_array[-1]), np.log10(T_array[0]), np.log10(T_array[-1])]
     nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(fig_x_length, fig_y_length))
+    plot_equilibrium_temperature(fig, ax, np.log10(nH_array), np.log10(balance_temperature))
+    ax.set_title("Equilibrium temperature")
+    ax.set_xlabel(r'$\rm{log_{10}}\; n_H \; (\rm{cm^{-3}})$')
+    ax.set_ylabel(r'$\rm{log_{10}}\; T \; (\rm{K})$')
+    plt.tight_layout()
+    fig.savefig('equilibrium_temperature.pdf', dpi=600)
+
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(fig_x_length, fig_y_length))
     plot_m(fig, ax, extent, m_matrix)
     plot_m_contour(fig, ax, nH_mesh, T_mesh, m_matrix)
     plot_equilibrium_temperature(fig, ax, np.log10(nH_array), np.log10(balance_temperature))
+    plt.tight_layout()
     fig.savefig('m.pdf', dpi=600)
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(fig_x_length, fig_y_length))
     plot_n(fig, ax, extent, n_matrix)
     plot_n_contour(fig, ax, nH_mesh, T_mesh, n_matrix)
     plot_equilibrium_temperature(fig, ax, np.log10(nH_array), np.log10(balance_temperature))
+    plt.tight_layout()
     fig.savefig('n.pdf', dpi=600)
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(fig_x_length, fig_y_length))
     plot_ax3(fig, ax, extent, 3 - 2 * a)
     plot_ax3_contour(fig, ax, nH_mesh, T_mesh, 3 - 2 * a)
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(fig_x_length, fig_y_length))
     plot_ax4(fig, ax, extent, c / (gamma - 1) - d)
     plot_ax4_contour(fig, ax, nH_mesh, T_mesh, c / (gamma - 1) - d)
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(fig_x_length, fig_y_length))
     plot_ax5(fig, ax, extent, c / (gamma - 1) + b + 2)
     plot_ax5_contour(fig, ax, nH_mesh, T_mesh, c / (gamma - 1) + b + 2)
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(fig_x_length, fig_y_length))
     plot_Gamma1(fig, ax, extent, Gamma1)
     plot_Gamma1_m1(fig, ax, nH_mesh, T_mesh, Gamma1 - 1)
     plot_equilibrium_temperature(fig, ax, np.log10(nH_array), np.log10(balance_temperature))
     fig.savefig('Gamma1.pdf', dpi=600)
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(fig_x_length, fig_y_length))
     plot_Gamma2(fig, ax, extent, Gamma2)
     plot_Gamma2_m1(fig, ax, nH_mesh, T_mesh, Gamma2 - 1)
     plot_Gamma2_contour(fig, ax, nH_mesh, T_mesh, Gamma2)
@@ -90,7 +102,7 @@ def individual_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma
     plot_equilibrium_temperature(fig, ax, np.log10(nH_array), np.log10(balance_temperature))
     fig.savefig('Gamma2.pdf', dpi=600)
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(fig_x_length, fig_y_length))
     plot_Gamma3(fig, ax, extent, Gamma3)
     plot_Gamma3_m1(fig, ax, nH_mesh, T_mesh, Gamma3 - 1)
     plot_equilibrium_temperature(fig, ax, np.log10(nH_array), np.log10(balance_temperature))

@@ -34,15 +34,15 @@ def plot_m(fig, ax, extent, m_matrix):
     print("Extrema of m: min:%24.14e, max: %24.14e" % (np.min(m_matrix), np.max(m_matrix)))
 
     im = ax.imshow(m_matrix.T, origin='lower', cmap="rainbow", vmin=0.1, vmax=3, extent=extent, interpolation="none")
-    ax.set_title("m(nH, T)")
-    ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
-    ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    fig.colorbar(im, ax=ax, extend='both', label='m', location="bottom")
+    ax.set_title(r"$\rm{m(n_H, T)}$")
+    ax.set_xlabel(r'$\rm{log_{10}}\; n_H \; (\rm{cm^{-3}})$')
+    ax.set_ylabel(r'$\rm{log_{10}}\; T \; (\rm{K})$')
+    fig.colorbar(im, ax=ax, extend='both', label='m', location="bottom", pad=0.3)
     return
 
 
 def plot_m_contour(fig, ax, nH_mesh, T_mesh, m_matrix):
-    CS = ax.contour(nH_mesh, T_mesh, m_matrix.T, levels=[1.5, 2])
+    CS = ax.contour(nH_mesh, T_mesh, m_matrix.T, levels=[1.5, 2], colors=('grey', 'brown'))
     ax.clabel(CS, CS.levels, inline=True, fontsize=10)
     return
 
@@ -50,15 +50,15 @@ def plot_m_contour(fig, ax, nH_mesh, T_mesh, m_matrix):
 def plot_n(fig, ax, extent, n_matrix):
     print("Extrema of n: min:%24.14e, max: %24.14e" % (np.min(n_matrix), np.max(n_matrix)))
     im = ax.imshow(n_matrix.T, origin='lower', cmap="rainbow", vmin=0.1, vmax=2, extent=extent, interpolation="none")
-    ax.set_title("n(nH, T)")
-    ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
-    ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    fig.colorbar(im, ax=ax, extend='both', label='n', location="bottom")
+    ax.set_title(r"$\rm{n(n_H, T)}$")
+    ax.set_xlabel(r'$\rm{log_{10}}\; n_H \; (\rm{cm^{-3}})$')
+    ax.set_ylabel(r'$\rm{log_{10}}\; T \; (\rm{K})$')
+    fig.colorbar(im, ax=ax, extend='both', label='n', location="bottom", pad=0.3)
     return
 
 
 def plot_n_contour(fig, ax, nH_mesh, T_mesh, n_matrix):
-    CS = ax.contour(nH_mesh, T_mesh, n_matrix.T, levels=[0.5, 1])
+    CS = ax.contour(nH_mesh, T_mesh, n_matrix.T, levels=[0.5, 1], colors=('grey', 'yellow'))
     ax.clabel(CS, CS.levels, inline=True, fontsize=10)
     return
 
@@ -66,10 +66,12 @@ def plot_n_contour(fig, ax, nH_mesh, T_mesh, n_matrix):
 def plot_Gamma1(fig, ax, extent, Gamma1):
     print("Extrema of Gamma1: min:%24.14e, max: %24.14e" % (np.min(Gamma1), np.max(Gamma1)))
     im = ax.imshow(Gamma1.T, origin='lower', cmap="bwr", vmin=-3, vmax=3, extent=extent, interpolation="none")
-    ax.set_title(r"$\Gamma_1\rm{(nH,T)}$")
-    ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
+    ax.set_title(r"$\Gamma_1\rm{(n_H,T)}$")
+    ax.set_xlabel(r'$\rm{log}\; n_H \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_1$", ticks=np.arange(-3, 3.5, 0.5), location="bottom")
+    cb = fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_1$", ticks=np.arange(-3, 3.5, 0.5), location="bottom",
+                      pad=0.3)
+    cb.ax.tick_params(labelsize=8)
     return
 
 
@@ -77,21 +79,25 @@ def plot_Gamma2(fig, ax, extent, Gamma2):
     print("Extrema of Gamma2: min:%24.14e, max: %24.14e" % (np.min(Gamma2), np.max(Gamma2)))
     im = ax.imshow(Gamma2.T, origin="lower", cmap="bwr", extent=extent, interpolation="none",
                    norm=TwoSlopeNorm(vcenter=1.0, vmin=-3, vmax=3))
-    ax.set_title(r"$\Gamma \; \rm{(nH,T)}, \;\; \Gamma\rm{=1+(3-2m)/(2n-2)}$")
-    ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
+    # ax.set_title(r"$\Gamma \; \rm{(nH,T)}, \;\; \Gamma\rm{=1+(3-2m)/(2n-2)}$")
+    ax.set_title(r"$\Gamma_2\rm{(n_H,T)}$")
+    ax.set_xlabel(r'$\rm{log}\; n_H \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
     # fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma$", ticks=np.arange(-3, 3.5, 0.5), location="bottom")
-    fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma$", location="bottom")
+    cb = fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_2$", location="bottom", pad=0.3)
+    cb.ax.tick_params(labelsize=8)
     return
 
 
 def plot_Gamma3(fig, ax, extent, Gamma3):
     print("Extrema of Gamma3: min: %24.14e, max: %24.14e" % (np.min(Gamma3), np.max(Gamma3)))
     im = ax.imshow(Gamma3.T, origin="lower", cmap="bwr", vmin=-3, vmax=3, extent=extent, interpolation="none")
-    ax.set_title(r"$\Gamma_3\rm{(nH,T)}$")
-    ax.set_xlabel(r'$\rm{log}\; nH \; (\rm{cm^{-3}})$')
+    ax.set_title(r"$\Gamma_3\rm{(n_H,T)}$")
+    ax.set_xlabel(r'$\rm{log}\; n_H \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
-    fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_3$", ticks=np.arange(-3, 3.5, 0.5), location="bottom")
+    cb = fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_3$", ticks=np.arange(-3, 3.5, 0.5), location="bottom",
+                      pad=0.3)
+    cb.ax.tick_params(labelsize=8)
     return im
 
 
@@ -179,15 +185,17 @@ def plot_individual_cooling_rate_vs_nH(ax, nH_array, T, CII_cooling_rate, OI_coo
                                        UV_heating_rate):
     ax.plot(np.log10(nH_array), np.log10(CII_cooling_rate), label="CII", linestyle="--")
     ax.plot(np.log10(nH_array), np.log10(OI_cooling_rate), label="OI", linestyle="--")
-    ax.plot(np.log10(nH_array), np.log10(H2_cooling_rate), label="H2", linestyle="--")
-    ax.plot(np.log10(nH_array), np.log10(CII_line_cooling_rate), label="CII line", linestyle="--")
-    ax.plot(np.log10(nH_array), np.log10(OI_line_cooling_rate), label="OI Line", linestyle="--")
+    ax.plot(np.log10(nH_array), np.log10(H2_cooling_rate), label=r"$\rm{H_2}$", linestyle="--")
+    ax.plot(np.log10(nH_array), np.log10(CII_line_cooling_rate), label="CII metastable Line", linestyle="--")
+    ax.plot(np.log10(nH_array), np.log10(OI_line_cooling_rate), label="OI metastable Line", linestyle="--")
     ax.plot(np.log10(nH_array), np.log10(Recombination_cooling_rate), label="Rec", linestyle="--")
     ax.plot(np.log10(nH_array), np.log10(UV_heating_rate), label="UV")
-    ax.set_title("T = " + str(T) + "K")
-    ax.set_xlabel(r"$\rm{log10 \; nH \; (cm^{-3})}$")
-    ax.set_ylabel(r"$\rm{log10} \; n\Gamma, \rm{log10} \; n^2 \Lambda$")
-    ax.legend(loc='lower right')
+    ax.set_ylim(-30, 0)
+    ax.set_title("T = " + str(T) + "K", fontsize=16)
+    # ax.set_xlabel(r"$\rm{log_{10} \; n_H \; (cm^{-3})}$", fontsize=10)
+    # ax.set_ylabel(r"$\rm{log_{10}} \; n\Gamma, \rm{log_{10}} \; n^2 \Lambda \; (\rm{ergs \; cm^{-3}\; s^{-1}})$",
+    #              fontsize=10)
+    ax.legend(loc="upper left", fontsize=10)
     return
 
 
@@ -196,16 +204,17 @@ def plot_individual_cooling_rate_vs_T(ax, nH, T_array, CII_cooling_rate, OI_cool
                                       UV_heating_rate):
     ax.plot(np.log10(T_array), np.log10(CII_cooling_rate), label="CII", linestyle="--")
     ax.plot(np.log10(T_array), np.log10(OI_cooling_rate), label="OI", linestyle="--")
-    ax.plot(np.log10(T_array), np.log10(H2_cooling_rate), label="H2", linestyle="--")
-    ax.plot(np.log10(T_array), np.log10(CII_line_cooling_rate), label="CII Line", linestyle="--")
-    ax.plot(np.log10(T_array), np.log10(OI_line_cooling_rate), label="OI Line", linestyle="--")
+    ax.plot(np.log10(T_array), np.log10(H2_cooling_rate), label=r"$\rm{H_2}$", linestyle="--")
+    ax.plot(np.log10(T_array), np.log10(CII_line_cooling_rate), label="CII metastable Line", linestyle="--")
+    ax.plot(np.log10(T_array), np.log10(OI_line_cooling_rate), label="OI metastable Line", linestyle="--")
     ax.plot(np.log10(T_array), np.log10(Recombination_cooling_rate), label="Rec", linestyle="--")
     ax.plot(np.log10(T_array), np.log10(UV_heating_rate), label="UV", linestyle="-")
-    ax.set_title("nH = " + str(nH) + r"$\rm{cm^{-3}}$")
-    ax.set_ylim(-30, -10)
-    ax.set_xlabel(r"$\rm{log10 \; T \; (K)}$")
-    ax.set_ylabel(r"$\rm{log10} \; n\Gamma, \rm{log10} \; n^2 \Lambda$")
-    ax.legend(loc="upper right")
+    ax.set_title(r"$\rm{n_H} = $" + "{:.2e}".format(nH) + r" $\rm{cm^{-3}}$", fontsize=16)
+    ax.set_ylim(-30, 0)
+    # ax.set_xlabel(r"$\rm{log_{10} \; T \; (K)}$", fontsize=10)
+    # ax.set_ylabel(r"$\rm{log_{10}} \; n\Gamma, \rm{log_{10}} \; n^2 \Lambda \; (\rm{ergs \; cm^{-3}\; s^{-1}})$",
+    #              fontsize=10)
+    ax.legend(loc="upper left", fontsize=10)
     return
 
 
