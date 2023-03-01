@@ -163,6 +163,17 @@ def plot_theoretical_equilibrium_temperature(ax, x, y):
     ax.tick_params(which='minor', width=1, length=3)
     return
 
+def plot_slope_line(ax, slope, intercepts, color):
+    xlim = ax.get_xlim()
+    ylim = ax.get_ylim()
+    x_vals = np.array(xlim)
+    for intercept in intercepts:
+        y_vals = intercept + slope * x_vals
+        ax.plot(x_vals, y_vals, linestyle=':', color=color)
+    ax.set_xlim(xlim)
+    ax.set_ylim(ylim)
+    return
+
 
 def plot_integrated(data, write_dir, nH, bins_center, density_edges, temperature_edges, density_histogram,
                     temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram,
@@ -185,6 +196,9 @@ def plot_integrated(data, write_dir, nH, bins_center, density_edges, temperature
     plot_density_temperature_2d_histogram_imshow(fig, ax4, density_temperature_2d_histogram.T *
                                                  units["unit_M_Msun"], density_edges + np.log10(units["unit_D_Hcc"]),
                                                  temperature_edges)
+
+    plot_slope_line(ax4, 0.666667, np.arange(-6, 4, 2), 'black')
+
     plot_theoretical_equilibrium_temperature(
         ax4, np.log10(nH), np.log10(equilibrium_temperature))
 
