@@ -6,3 +6,4 @@ __pycache__
 *.jpg
 *.npy
 .DS_Store
+*.sh
