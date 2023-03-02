@@ -4,7 +4,7 @@ from module_calculate import *
 from module_plot import *
 
 
-def intergrated_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3, a, b, c, d, balance_temperature):
+def intergrated_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3, a, b, c, d, balance_temperature, total_cooling_power):
     gamma = 5 / 3
     fig, ((ax0, ax1, ax2), (ax3, ax4, ax5), (ax6, ax7, ax8)) = plt.subplots(nrows=3, ncols=3, figsize=(21, 18))
     extent = [np.log10(nH_array[0]), np.log10(nH_array[-1]), np.log10(T_array[0]), np.log10(T_array[-1])]
@@ -17,6 +17,9 @@ def intergrated_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamm
     plot_n(fig, ax1, extent, n_matrix)
     plot_n_contour(fig, ax1, nH_mesh, T_mesh, n_matrix)
     plot_equilibrium_temperature(fig, ax1, np.log10(nH_array), np.log10(balance_temperature))
+
+    plot_total_cooling_rate(fig, ax2, extent, total_cooling_power)
+    plot_equilibrium_temperature(fig, ax2, np.log10(nH_array), np.log10(balance_temperature))
 
     plot_ax3(fig, ax3, extent, 3 - 2 * a)
     plot_ax3_contour(fig, ax3, nH_mesh, T_mesh, 3 - 2 * a)
@@ -46,7 +49,7 @@ def intergrated_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamm
     return
 
 
-def individual_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3, a, b, c, d, balance_temperature):
+def individual_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3, a, b, c, d, balance_temperature, total_cooling_power):
     fig_x_length = 5
     fig_y_length = 3
     gamma = 5 / 3
@@ -54,10 +57,8 @@ def individual_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma
     nH_mesh, T_mesh = np.meshgrid(np.log10(nH_array), np.log10(T_array))
 
     fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(fig_x_length, fig_y_length))
+    plot_total_cooling_rate(fig, ax, extent, total_cooling_power)
     plot_equilibrium_temperature(fig, ax, np.log10(nH_array), np.log10(balance_temperature))
-    ax.set_title("Equilibrium temperature")
-    ax.set_xlabel(r'$\rm{log_{10}}\; n_H \; (\rm{cm^{-3}})$')
-    ax.set_ylabel(r'$\rm{log_{10}}\; T \; (\rm{K})$')
     plt.tight_layout()
     fig.savefig('equilibrium_temperature.pdf', dpi=600)
 
@@ -123,6 +124,7 @@ def main():
     T_array = np.logspace(T_start, T_end, T_count)
 
     balance_temperature = calculate_equilibrium_temperature(nH_array, T_array)
+    total_cooling_power = calculate_total_cooling_power(nH_array, T_array, nH_count, T_count)
 
     m_matrix = calculate_m(nH_array, T_array, nH_count, T_count)
     n_matrix = calculate_n(nH_array, T_array, nH_count, T_count)
@@ -134,8 +136,8 @@ def main():
     Gamma2 = calculate_Gamma2(m_matrix, n_matrix)
     Gamma3 = calculate_Gamma3(m_matrix, n_matrix)
 
-    intergrated_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3, a, b, c, d, balance_temperature)
-    individual_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3, a, b, c, d, balance_temperature)
+    intergrated_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3, a, b, c, d, balance_temperature, total_cooling_power)
+    individual_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3, a, b, c, d, balance_temperature, total_cooling_power)
     return
 
 
