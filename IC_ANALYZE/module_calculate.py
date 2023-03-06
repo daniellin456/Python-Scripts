@@ -4,6 +4,21 @@ from module_cooling import *
 def calculate_total_cooling_rate(nH, T, x):
     return nH * heating(nH, T, x) - nH ** 2 * cooling(nH, T, x)
 
+def calculate_total_cooling_power(nH_array, T_array, nH_count, T_count):
+    total_cooling_rate = np.zeros(shape=(nH_count, T_count))
+    for i in range(0, nH_count):
+        for j in range(0, T_count):
+            nH = nH_array[i]
+            T = T_array[j]
+            ne = 2.4e-3 * ((T / 100.0) ** 0.25) / 0.5
+            x = ne / nH
+            if x >= 0.1:
+                x = 0.1
+            elif x <= 1.4e-4:
+                x = 1.4e-4
+            total_cooling_rate[i, j] = calculate_total_cooling_rate(nH, T, x)
+
+    return total_cooling_rate
 
 def calculate_equilibrium_temperature(nH_array, T_array):
     total_cooling_rate = np.zeros(shape=len(T_array))
