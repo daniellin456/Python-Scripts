@@ -1,6 +1,8 @@
 from PIL import Image
 import argparse
-import numpy as np
+
+
+# import numpy as np
 
 
 def create_canvas(input_filename, row, column):
@@ -12,14 +14,15 @@ def create_canvas(input_filename, row, column):
     return merge_image
 
 
-def main(folder_path, output_filename, row, column, var):
-    input_filename = folder_path + var + "_x_0_00001" + ".jpg"
+def main(index_list, folder_path, output_filename, row, column, var):
+    # input_filename = folder_path + var + "_x_0_00001" + ".jpg"
+    input_filename = folder_path + var + "_00001" + ".jpg"
     merge_image = create_canvas(input_filename, row, column)
 
     index = 0
     for i in range(0, row):
         for j in range(0, column):
-            filename = folder_path + "rho_x_0_0000" + str(index_list[index]) + ".jpg"
+            filename = folder_path + "dens_hist_0000" + str(index_list[index]) + ".jpg"
             img = Image.open(filename)
             width, height = img.size
             merge_image.paste(img, (width * j, height * i))

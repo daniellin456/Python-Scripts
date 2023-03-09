@@ -16,7 +16,7 @@ def calculate_total_cooling_power(nH_array, T_array, nH_count, T_count):
                 x = 0.1
             elif x <= 1.4e-4:
                 x = 1.4e-4
-            total_cooling_rate[i, j] = calculate_total_cooling_rate(nH, T, x)
+            total_cooling_rate[i, j] = calculate_total_cooling_rate(nH, T, x) / nH
 
     return total_cooling_rate
 

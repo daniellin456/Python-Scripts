@@ -5,22 +5,27 @@ def plot_equilibrium_temperature(fig, ax, nH_array, balance_temperature):
     ax.plot(nH_array, balance_temperature, linewidth=1, linestyle="--", color="black")
     return
 
+
 def plot_total_cooling_rate(fig, ax, extent, total_cooling_power):
-    print("Extrema of total_cooling_power: min:%24.14e, max: %24.14e" % (np.min(total_cooling_power), np.max(total_cooling_power)))
+    print("Extrema of total_cooling_power: min:%24.14e, max: %24.14e" % (
+        np.min(total_cooling_power), np.max(total_cooling_power)))
     im = ax.imshow(total_cooling_power.T, origin="lower", cmap="bwr", extent=extent, interpolation="none",
-                     norm=SymLogNorm(linthresh=1e-28, vmin=-1e-12, vmax=1e-12))
+                   norm=SymLogNorm(linthresh=1e-26, vmin=-1e-23, vmax=1e-23))
     ax.set_title("Equilibrium temperature")
     ax.set_xlabel(r'$\rm{log_{10}}\; n_H \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log_{10}}\; T \; (\rm{K})$')
-    cb = fig.colorbar(im, ax=ax, extend='both', location="bottom", pad=0.3, ticks=[-1e-12, -1e-16, -1e-20, -1e-24, 0, 1e-24, 1e-20, 1e-16, 1e-12])
+    # ticks = [-1e-12, -1e-16, -1e-20, -1e-24, 0, 1e-24, 1e-20, 1e-16, 1e-12]
+    cb = fig.colorbar(im, ax=ax, extend='both', label=r"$\rm{\Gamma - n_H\Lambda} \;(erg \;s^{-1})$", location="bottom",
+                      pad=0.3)
     cb.ax.tick_params(labelsize=8)
     return
+
 
 def plot_dTotal_Lambda_dRho_by_np_diff(fig, ax, nH_array, T_array, dTotal_Lambda_dRho_by_np_diff):
     for i in range(0, len(T_array)):
         ax.plot(np.log10(nH_array[1:]), np.log10(dTotal_Lambda_dRho_by_np_diff[i]), label="T =" + str(T_array[i]))
 
-    ax.set_title(r"$\rm{\frac{d\Lambda_{tot}}{d\rho}}\;by\;np.diffl$")
+    ax.set_title(r"$\rm{\frac{d\Lambda_{tot}}{d\rho}}\;by\;np.diff$")
     ax.set_xlabel(r"$\rm{log\;nH\;cm^{-3}}$")
     ax.set_ylabel(r"$\rm{\frac{d\Lambda_{tot}}{d\rho}}$")
     ax.set_ylim(-3, 3)
