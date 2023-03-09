@@ -90,7 +90,7 @@ def plot_density_profile(ax, x, y):
     ax.set_xlim(10 ** -2, 10 ** 2)
     ax.set_ylim(10 ** 0, 10 ** 7)
     ax.set_xlabel("Radius (pc)")
-    ax.set_ylabel("Number Density " + r"$\rm(1/cm^3)$")
+    ax.set_ylabel("Density " + r"$\rm(cm^{-3})$")
     ax.tick_params(which='major', width=1, length=5)
     ax.tick_params(which='minor', width=1, length=3)
     return
@@ -115,7 +115,7 @@ def plot_radial_velocity_profile(ax, x, y):
     ax.set_xlim(10 ** -2, 10 ** 2)
     ax.set_ylim(np.nanmin(y), np.nanmax(y))
     ax.set_xlabel("Radius (pc)")
-    ax.set_ylabel("Radial Velocity " + r"$\rm(m/s)$")
+    ax.set_ylabel("Radial Velocity " + r"$\rm(ms^{-1})$")
     ax.axhline(y=0.0, c="r", ls="--", lw=1)
     ax.tick_params(which='major', width=1, length=5)
     ax.tick_params(which='minor', width=1, length=3)
@@ -149,11 +149,13 @@ def plot_density_temperature_2d_histogram_imshow(fig, ax, hist_2d, density_edges
     im = ax.imshow(hist_2d, origin='lower', norm=LogNorm(), cmap='rainbow', vmin=1e-10, vmax=1e4,
                    extent=(density_edges[0], density_edges[-1], temperature_edges[0], temperature_edges[-1]))
 
-    ax.set_xlabel("Log10 Number Density " + r"$\rm(1/cm^3)$")
-    ax.set_ylabel("Log10 Temperature " + r"$\rm(K)$")
+    #ax.set_xlabel(r"$Log10 Density " + r"$\rm(1/cm^3)$")
+    ax.set_xlabel(r"$\rm{log_{10}}\; n_H \; (\rm{cm^{-3}})$")
+    #ax.set_ylabel(r"$Log10 Temperature " + r"$\rm(K)$")
+    ax.set_ylabel(r"$\rm{log_{10}}\; T \; (\rm{K})$")
     ax.tick_params(which='major', width=1, length=5)
     ax.tick_params(which='minor', width=1, length=3)
-    fig.colorbar(im, ax=ax, extend='both', label='Mass ' + r'$\rm(M_{\odot})$')
+    fig.colorbar(im, ax=ax, extend='both', orientation="horizontal", label='Mass ' + r'$\rm(M_{\odot})$')
     return
 
 
@@ -211,38 +213,38 @@ def plot_integrated(data, write_dir, nH, bins_center, density_edges, temperature
 def plot_single(data, write_dir, nH, bins_center, density_edges, temperature_edges, density_histogram,
                 temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram,
                 equilibrium_temperature):
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
-    fig.suptitle("No. " + str(output) + " Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
-    ax.set_title("Density histogram")
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(7, 6))
+    ax.set_title("Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
+    #ax.set_title("Density histogram")
     plot_density_profile(ax, bins_center * units['unit_L_pc'], density_histogram * units["unit_D_Hcc"])
-    plt.savefig(write_dir + '/dens_hist_' + format(output, '05') + ".pdf", bbox_inches='tight')
+    plt.savefig(write_dir + '/single/dens_hist_' + format(output, '05') + ".pdf", bbox_inches='tight')
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
-    fig.suptitle("No. " + str(output) + " Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
-    ax.set_title("Temperature histogram")
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(7, 6))
+    ax.set_title("Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
+    #ax.set_title("Temperature histogram")
     plot_temperature_profile(ax, bins_center * units['unit_L_pc'], temperature_histogram)
-    plt.savefig(write_dir + '/temp_hist_' + format(output, '05') + ".pdf", bbox_inches='tight')
+    plt.savefig(write_dir + '/single/temp_hist_' + format(output, '05') + ".pdf", bbox_inches='tight')
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
-    fig.suptitle("No. " + str(output) + " Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
-    ax.set_title("Radial velocity histogram")
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(7, 6))
+    ax.set_title("Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
+    #ax.set_title("Radial velocity histogram")
     plot_radial_velocity_profile(ax, bins_center * units['unit_L_pc'], radial_velocity_histogram * units["unit_V_si"])
-    plt.savefig(write_dir + '/vel_hist_' + format(output, '05') + ".pdf", bbox_inches='tight')
+    plt.savefig(write_dir + '/single/vel_hist_' + format(output, '05') + ".pdf", bbox_inches='tight')
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
-    fig.suptitle("No. " + str(output) + " Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
-    ax.set_title("Enclosed mass")
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(7, 6))
+    ax.set_title("Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
+    #ax.set_title("Enclosed mass")
     plot_enclosed_mass(ax, bins_center * units['unit_L_pc'], enclosed_mass * units["unit_M_Msun"])
-    plt.savefig(write_dir + '/mass_' + format(output, '05') + ".pdf", bbox_inches='tight')
+    plt.savefig(write_dir + '/single/mass_' + format(output, '05') + ".pdf", bbox_inches='tight')
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
-    fig.suptitle("No. " + str(output) + " Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
-    ax.set_title("Density-Temperature relation")
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(7, 6))
+    ax.set_title("Time: " + str(round(data.info["time"] * units['unit_T_Kyr'], 3)) + " (kyr)")
+    #ax.set_title("Density-Temperature relation")
     plot_density_temperature_2d_histogram_imshow(fig, ax, density_temperature_2d_histogram.T *
                                                  units["unit_M_Msun"], density_edges + np.log10(units["unit_D_Hcc"]),
                                                  temperature_edges)
     plot_theoretical_equilibrium_temperature(ax, np.log10(nH), np.log10(equilibrium_temperature))
-    plt.savefig(write_dir + '/rho_vs_temp_profiles_' + format(output, '05') + ".pdf", bbox_inches='tight')
+    plt.savefig(write_dir + '/single/rho_vs_temp_profiles_' + format(output, '05') + ".pdf", bbox_inches='tight')
     return
 
 
@@ -304,10 +306,10 @@ def make_histogram(read_dir, write_dir, output):
     equilibrium_temperature = np.load(
         '/data/daniellin/PYTHON_SCRIPTS/COOLING_FUNCTION_ANALYZE/EQUILIBRIUM/equilibrium_Temp.npy')
 
-    plot_integrated(data, write_dir, nH, bins_center, density_edges, temperature_edges, density_histogram, temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram, equilibrium_temperature)
-    # plot_single(data, write_dir, nH, bins_center, density_edges, temperature_edges, density_histogram,
-    #             temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram,
-    #             equilibrium_temperature)
+    #plot_integrated(data, write_dir, nH, bins_center, density_edges, temperature_edges, density_histogram, temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram, equilibrium_temperature)
+    plot_single(data, write_dir, nH, bins_center, density_edges, temperature_edges, density_histogram,
+                temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram,
+                equilibrium_temperature)
     return
 
 units = dict()
@@ -321,5 +323,5 @@ if __name__ == '__main__':
     read_directory, write_directory = local_dir(args.input, args.output)
     outputs = search_valid_outputs(read_directory)
 
-    for output in outputs:
+    for output in outputs[:3]:
         make_histogram(read_directory, write_directory, output)
