@@ -4,15 +4,13 @@ matplotlib.use('Agg')
 
 import os
 import argparse
-import numpy as np
-from matplotlib.ticker import FormatStrFormatter
-from matplotlib.colors import LogNorm, SymLogNorm, Normalize
-import matplotlib.pyplot as plt
 from pymses.sources.ramses.filename_utils import search_valid_outputs
 from pymses.utils import constants as C
 from pymses.filters import CellsToPoints
-from pymses.analysis import Camera, slicing, ScalarOperator
 import pymses
+from module_plot import *
+from module_histogram import *
+from module_units import *
 
 G0 = 1. / 1.7
 
@@ -26,6 +24,7 @@ def local_dir(read_directory, write_directory):
 
 def make_histogram(read_dir, write_dir, output):
     global units
+
     bins = np.logspace(-4.0, -0.3, 32)
     bins_center = np.sqrt(bins[:-1] * bins[1:])
 
@@ -33,6 +32,7 @@ def make_histogram(read_dir, write_dir, output):
     bins_center = np.append(bins[1] / 2, bins_center)
 
     data = pymses.RamsesOutput(read_dir, output)
+
     if len(units) == 0:
         units = set_units(data)
 
