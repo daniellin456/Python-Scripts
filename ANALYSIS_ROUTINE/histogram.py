@@ -285,31 +285,12 @@ def make_histogram(read_dir, write_dir, output):
         radius, bins=bins, weights=temperature * mass)
     temperature_histogram = mass_weighted_temperature_histogram / mass_histogram
 
-    # Calculate radial velocity profile
-    mass_weighted_radial_velocity_histogram, _ = np.histogram(
-        radius, bins=bins, weights=radial_velocity * mass)
-    radial_velocity_histogram = mass_weighted_radial_velocity_histogram / mass_histogram
-
-    # Calculate enclosed mass profile
-    enclosed_mass = np.cumsum(mass_histogram)
-
-    # Calculate Density vs. Temperature 2D histogram
-    density_bins = np.linspace(-2, 10, 128)
-    temparture_bins = np.linspace(0, 4, 128)
-    density_temperature_2d_histogram, density_edges, temperature_edges = np.histogram2d(
-        np.log10(density), np.log10(temperature), weights=mass, bins=(density_bins, temparture_bins))
-    density_temperature_2d_histogram = np.where(
-        density_temperature_2d_histogram > 0, density_temperature_2d_histogram, np.nan)
-
-    # Calculate theoretical equilibrium temperature
-    nH = np.load('/data/daniellin/PYTHON_SCRIPTS/COOLING_FUNCTION_ANALYZE/EQUILIBRIUM/nH.npy')
-    equilibrium_temperature = np.load(
-        '/data/daniellin/PYTHON_SCRIPTS/COOLING_FUNCTION_ANALYZE/EQUILIBRIUM/equilibrium_Temp.npy')
-
-    #plot_integrated(data, write_dir, nH, bins_center, density_edges, temperature_edges, density_histogram, temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram, equilibrium_temperature)
-    plot_single(data, write_dir, nH, bins_center, density_edges, temperature_edges, density_histogram,
-                temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram,
-                equilibrium_temperature)
+    plot_integrated(data, write_dir, output, units, nH, bins_center, density_edges, temperature_edges,
+                    density_histogram, temperature_histogram, radial_velocity_histogram, enclosed_mass,
+                    density_temperature_2d_histogram, equilibrium_temperature)
+    # plot_single(data, write_dir, output, units, nH, bins_center, density_edges, temperature_edges, density_histogram,
+    #            temperature_histogram, radial_velocity_histogram, enclosed_mass, density_temperature_2d_histogram,
+    #            equilibrium_temperature)
     return
 
 units = dict()
