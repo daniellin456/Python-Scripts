@@ -275,15 +275,16 @@ def make_histogram(read_dir, write_dir, output):
     radial_velocity = np.sum(np.multiply(
         velocity, coordinate - center_coordinate), axis=1) / radius
 
-    # Calculate density profile
-    mass_histogram, _ = np.histogram(radius, bins=bins, weights=mass)
-    volume_histogram, _ = np.histogram(radius, bins=bins, weights=volume)
-    density_histogram = mass_histogram / volume_histogram
-
-    # Calculate temperature profile
-    mass_weighted_temperature_histogram, _ = np.histogram(
-        radius, bins=bins, weights=temperature * mass)
-    temperature_histogram = mass_weighted_temperature_histogram / mass_histogram
+    mass_histogram = calculate_mass_histogram(radius, bins, mass)
+    volume_histogram = calculate_volume_histogram(radius, bins, volume)
+    density_histogram = calculate_density_histogram(mass_histogram, volume_histogram)
+    temperature_histogram = calculate_temperature_histogram(radius, bins, [temperature, mass], mass_histogram)
+    radial_velocity_histogram = calculate_radial_velocity_histogram(radius, bins, [radial_velocity, mass],
+                                                                    mass_histogram)
+    enclosed_mass = calculate_enclosed_mass(mass_histogram)
+    density_temperature_2d_histogram, density_edges, temperature_edges = calculate_density_temperature_2d_histogram(
+        density, temperature, mass)
+    nH, equilibrium_temperature = calculate_equilibrium_temperature()
 
     plot_integrated(data, write_dir, output, units, nH, bins_center, density_edges, temperature_edges,
                     density_histogram, temperature_histogram, radial_velocity_histogram, enclosed_mass,
