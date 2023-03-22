@@ -14,21 +14,43 @@ def create_canvas(input_filename, row, column):
     return merge_image
 
 
-def main(index_list, folder_path, output_filename, row, column, var):
+def main(index_list, folder_path, row, column):
     # input_filename = folder_path + var + "_x_0_00001" + ".jpg"
-    input_filename = folder_path + var + "_00001" + ".jpg"
-    merge_image = create_canvas(input_filename, row, column)
+    figures_var = ['rho', 'P', 'T']
+    profiles_var = ['dens', 'dens_temp', 'mass', 'temp', 'vel']
 
-    index = 0
-    for i in range(0, row):
-        for j in range(0, column):
-            filename = folder_path + "dens_hist_0000" + str(index_list[index]) + ".jpg"
-            img = Image.open(filename)
-            width, height = img.size
-            merge_image.paste(img, (width * j, height * i))
-            index = index + 1
+    for var in figures_var:
+        input_filename = folder_path + "/figures_jpg/" + var + "_x_0_00001.jpg"
+        merge_image = create_canvas(input_filename, row, column)
 
-    merge_image.save(folder_path + output_filename)
+        index = 0
+        for i in range(0, row):
+            for j in range(0, column):
+                filename = folder_path + "/figures_jpg/" + var + "_x_0_" + f"{int(index_list[index]):05d}" + ".jpg"
+                print(filename)
+                img = Image.open(filename)
+                width, height = img.size
+                merge_image.paste(img, (width * j, height * i))
+                index = index + 1
+
+        merge_image.save(folder_path + "/figures_jpg/merge_" + var + '.jpg')
+
+    for var in profiles_var:
+        input_filename = folder_path + "/profiles_jpg/" + var + "_00001" + ".jpg"
+        merge_image = create_canvas(input_filename, row, column)
+
+        index = 0
+        for i in range(0, row):
+            for j in range(0, column):
+                filename = folder_path + "/profiles_jpg/" + var + "_" + f"{int(index_list[index]):05d}" + ".jpg"
+                print( filename )
+                img = Image.open(filename)
+                width, height = img.size
+                merge_image.paste(img, (width * j, height * i))
+                index = index + 1
+
+        merge_image.save(folder_path + "/profiles_jpg/merge_" + var + '.jpg')
+
 
     return
 
@@ -40,8 +62,6 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--column", help="number of column in grid")
     parser.add_argument("-i", "--input", help="input image index")
     parser.add_argument("-f", "--folder", help="root file folder path")
-    parser.add_argument("-o", "--output", help="output fileaname")
-    parser.add_argument("-v", "--variables", help="variable to merge")
     args = parser.parse_args()
 
     if args.row != "":
@@ -62,19 +82,9 @@ if __name__ == "__main__":
     else:
         raise Exception("must be specific the index list")
 
-    if args.output != "":
-        output_filename = args.output
-    else:
-        raise Exception("must be specific the output filename")
-
     if args.folder != "":
         folder_path = args.folder
     else:
         raise Exception("must be specific the root folder")
 
-    if args.variables:
-        var = args.variables
-    else:
-        raise Exception("must be specific the variables")
-
-    main(index_list, folder_path, output_filename, row, column, var)
+    main(index_list, folder_path, row, column)
