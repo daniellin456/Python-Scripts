@@ -68,39 +68,41 @@ units = dict()
 G0 = 1. / 1.7
 if __name__ == '__main__':
     ROOT_PATH = "/data/daniellin/RAMSES_RUNS/"
-    target_folders = [ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
-                      ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.068",
-                      ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.047",
-                      ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
-                      ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.068",
-                      ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.047",
-                      ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
-                      ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.068",
-                      ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.047",
-                      ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_10K",
-                      ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_80K",
-                      ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_400K",
-                      ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_10K",
-                      ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_80K",
-                      ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_400K",
-                      ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_10K",
-                      ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_80K",
-                      ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_400K",
+    target_folders = [#ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
+                      #ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.068",
+                      #ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.047",
+                      #ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+                      #ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.068",
+                      #ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.047",
+                      #ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
+                      #ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.068",
+                      #ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.047",
+                      #ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_10K",
+                      #ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_80K",
+                      #ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_400K",
+                      #ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_10K",
+                      #ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_80K",
+                      #ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_400K",
+                      #ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_10K",
+                      #ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_80K",
+                      #ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_400K",
                       ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/m_1.3_n_2.3",
                       ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/m_1.5_n_3.0",
                       ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/m_2.0_n_4.0",
-                      ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/m_1.3_n_2.3",
                       ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_400K",
                       ROOT_PATH + "PARAMETRIC_COOLING/FFSCT_0.047/m_1.3_n_2.3"]
 
-    parser = argparse.ArgumentParser(
-        description="plot profiles from RAMSES output")
-    parser.add_argument('-i', '--input', type=str, help="RAMSES output path")
-    parser.add_argument('-o', '--output', type=str, help="Figure output path")
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser(
+    #     description="plot profiles from RAMSES output")
+    # parser.add_argument('-i', '--input', type=str, help="RAMSES output path")
+    # parser.add_argument('-o', '--output', type=str, help="Figure output path")
+    # args = parser.parse_args()
+    #
+    # read_directory, write_directory = local_dir(args.input, args.output)
 
-    read_directory, write_directory = local_dir(args.input, args.output)
-    outputs = search_valid_outputs(read_directory)
+    for folders in target_folders:
+        units.clear()
+        outputs = search_valid_outputs(folders)
 
-    for output in outputs[:2]:
-        make_histogram(read_directory, write_directory, output)
+        for output in outputs[:3]:
+            make_histogram(folders, folders+"/profiles", output)
