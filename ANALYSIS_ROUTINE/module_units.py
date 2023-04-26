@@ -3,13 +3,13 @@ from pymses.utils import constants as C
 
 def set_units(data):
     units = dict()
-    print('====== Output Info ======')
-    for key in data.info:
-        if key == "dom_decomp_Hilbert_keys":
-            continue
-        print(key, data.info[key])
-    print
-    ""
+    # print('====== Output Info ======')
+    # for key in data.info:
+    #     if key == "dom_decomp_Hilbert_keys":
+    #         continue
+    #     print(key, data.info[key])
+    # print
+    # ""
     boxlen = data.info["boxlen"]
     mu = 2.31  # 2.31  #ramses2.31, pymses 1/0.76
     fac_mu = 2.31 * 0.76
@@ -45,9 +45,9 @@ def set_units(data):
     units['unit_V_si'] = data.info['unit_velocity'].express(C.m / C.s)
     units['unit_Pressure'] = data.info['unit_pressure'].express(C.N / C.m ** 2)
     units['unit_Temperature'] = data.info['unit_temperature'].express(C.K)
-    print("====== Unit after normalize ======")
-    for item in units.items():
-        print(item)
-    print
-    ""
+    # print("====== Unit after normalize ======")
+    # for item in units.items():
+    #     print(item)
+    # print
+    # ""
     return units

@@ -8,7 +8,7 @@ import argparse
 def create_canvas(input_filename, row, column):
     img = Image.open(input_filename)
     width, height = img.size
-    total_width = column * width
+    total_width = column * width + 100
     total_height = row * height
     merge_image = Image.new(mode="RGB", size=(total_width, total_height), color=(255, 255, 255))
     return merge_image

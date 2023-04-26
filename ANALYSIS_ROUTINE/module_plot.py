@@ -5,12 +5,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_density_profile(ax, x, y):
-    ax.plot(x, y, "-", markersize=2, color="black")
+def plot_density_profile(ax, x, y, xlim=[10**-1.7, 10**1.3], ylim=[10**0.8, 10**6.0], color="black", label=None):
+    print(xlim)
+    print(ylim)
+    ax.plot(x, y, "-", markersize=2, color=color, label=label)
     ax.set_xscale("log")
     ax.set_yscale("log")
-    ax.set_xlim(10 ** -2, 10 ** 2)
-    ax.set_ylim(10 ** 0, 10 ** 7)
+    ax.set_xlim(xlim[0], xlim[1])
+    ax.set_ylim(ylim[0], ylim[1])
     ax.set_xlabel("Radius (pc)")
     ax.set_ylabel("Density " + r"$\rm(cm^{-3})$")
     ax.tick_params(which='major', width=1, length=5)
@@ -18,12 +20,12 @@ def plot_density_profile(ax, x, y):
     return
 
 
-def plot_temperature_profile(ax, x, y):
-    ax.plot(x, y, "-", markersize=2, color="black")
+def plot_temperature_profile(ax, x, y, xlim=[10**-1.7, 10**1.3], ylim=[10**0.5, 10**2.7], color="black", label=None):
+    ax.plot(x, y, "-", markersize=2, color=color, label=label)
     ax.set_xscale("log")
     ax.set_yscale("log")
-    ax.set_xlim(10 ** -2, 10 ** 2)
-    ax.set_ylim(10 ** 0, 10 ** 6)
+    ax.set_xlim(xlim[0], xlim[1])
+    ax.set_ylim(ylim[0], ylim[1])
     ax.set_xlabel("Radius (pc)")
     ax.set_ylabel("Temperature " + r"$\rm(K)$")
     ax.tick_params(which='major', width=1, length=5)
@@ -31,24 +33,24 @@ def plot_temperature_profile(ax, x, y):
     return
 
 
-def plot_radial_velocity_profile(ax, x, y):
-    ax.plot(x, y, "-", markersize=2, color="black")
+def plot_radial_velocity_profile(ax, x, y, xlim=[10**-1.7, 10**1.3], ylim=[-1000, 1000], color="black", label=None):
+    ax.plot(x, y, "-", markersize=2, color=color, label=label)
     ax.set_xscale("log")
-    ax.set_xlim(10 ** -2, 10 ** 2)
-    ax.set_ylim(np.nanmin(y), np.nanmax(y))
+    ax.set_xlim(xlim[0], xlim[1])
+    ax.set_ylim(ylim[0], ylim[1])
     ax.set_xlabel("Radius (pc)")
     ax.set_ylabel("Radial Velocity " + r"$\rm(ms^{-1})$")
-    ax.axhline(y=0.0, c="r", ls="--", lw=1)
+    # ax.axhline(y=0.0, c="r", ls="--", lw=1)
     ax.tick_params(which='major', width=1, length=5)
     ax.tick_params(which='minor', width=1, length=3)
     return
 
 
-def plot_enclosed_mass(ax, x, y):
-    ax.plot(x, y, "-", markersize=2, color="black")
+def plot_enclosed_mass(ax, x, y, xlim=[10**-1.7, 10**1.3], color="black", label=None):
+    ax.plot(x, y, "-", markersize=2, color=color, label=label)
     ax.set_xscale("log")
     ax.set_yscale("log")
-    ax.set_xlim(10 ** -2, 10 ** 2)
+    ax.set_xlim(xlim[0], xlim[1])
     ax.set_xlabel("Radius (pc)")
     ax.set_ylabel("Enclosed Mass " + r"$\rm(M_{\odot})$")
     ax.tick_params(which='major', width=1, length=5)
@@ -77,7 +79,7 @@ def plot_density_temperature_2d_histogram_imshow(fig, ax, hist_2d, density_edges
     ax.set_ylabel(r"$\rm{log_{10}}\; T \; (\rm{K})$")
     ax.tick_params(which='major', width=1, length=5)
     ax.tick_params(which='minor', width=1, length=3)
-    fig.colorbar(im, ax=ax, extend='both', orientation="horizontal", label='Mass ' + r'$\rm(M_{\odot})$')
+    fig.colorbar(im, ax=ax, extend='both', orientation="horizontal", label='Mass ' + r'$\rm(M_{\odot})$', pad=0.2)
     return
 
 
