@@ -635,7 +635,8 @@ if __name__ == '__main__':
     #writedir = args.read_dir
 
     readdir, writedir = local_dir(args.read_dir)
-    outputs = search_ro(readdir)
+    #outputs = search_ro(readdir)
+    outputs = [1,6,12]
     nout = len(outputs)
 
     overwrite = True
@@ -663,11 +664,11 @@ if __name__ == '__main__':
     temperature = True
     amr_level = True
     
-    zoom_v = 0.5 / 2**np.arange(3)
-    i_ims = [0, 1, 2]
+    #zoom_v = 0.5 / 2**np.arange(3)
+    #i_ims = [0, 1, 2]
 
-    #zoom_v = 0.5 / 2**np.arange(1)
-    #i_ims = [0]
+    zoom_v = 0.5 / 2**np.arange(1)
+    i_ims = [0]
 
     for iout in range(0, nout, 1):
 

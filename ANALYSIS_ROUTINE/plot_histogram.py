@@ -10,6 +10,7 @@ from scipy.optimize import fsolve
 from module_histogram import *
 from module_units import *
 from module_plot import *
+from module_style import *
 
 G = 6.67e-8
 mu = 2.31
@@ -134,7 +135,7 @@ def main(target_folder_paths, timestamps):
         m, n, lambda_0 = get_parametric_cooling_m_n(target_folder_path)
 
         for timestamp in timestamps[target_folder_paths.index(target_folder_path)]: # Draw 3 different timestamp in each FFSCT
-            fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(4, 3.2))
+            fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(6, 4.5))
 
             data = pymses.RamsesOutput(target_folder_path, timestamp)
             units = set_units(data)
@@ -157,15 +158,16 @@ def main(target_folder_paths, timestamps):
 
             if m != "" and n != "" and lambda_0 != "":
                 plot_t_ff_eq_t_cooling(ax, float(m), float(n), float(lambda_0))
-                ax.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0, fontsize=8)
-                ax.legend(loc="upper right", fontsize=8)
+                ax.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize=8)
+                ax.legend(loc="lower right", fontsize=12)
 
             else:
                 plot_theoretical_equilibrium_temperature(ax, np.log10(nH), np.log10(equilibrium_temperature))
                 ax.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
 
 
-            fig.suptitle("t = " + str(round(time_sec/free_fall_time, 3)) + r"$ t_{ff}$, " + str(round(time_kyr, 3)) + " kyr", fontsize=14, y=0.90)
+            # fig.suptitle("t = " + str(round(time_sec/free_fall_time, 3)) + r"$ t_{ff}$, " + str(round(time_kyr, 3)) + " kyr", fontsize=14, y=0.90)
+            ax.text(9.5, 3.5, "t = " + str(round(time_sec/free_fall_time, 3)) + r"$ t_{ff}$, " + str(round(time_kyr, 3)) + " kyr", ha='right', va='center', fontsize=18)
             fig.tight_layout()
 
             if m != "" and n != "":
@@ -181,6 +183,7 @@ def main(target_folder_paths, timestamps):
 
 if __name__ == "__main__":
 
+    plot_style()
     ROOT_PATH = "/data/daniellin/RAMSES_RUNS/"
     TARGET_FOLDER_PATHS = [
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
@@ -192,9 +195,9 @@ if __name__ == "__main__":
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.068",
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.047",
-        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
-        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
-        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
+        ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
+        ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+        ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
         # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
         # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
         # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
@@ -202,11 +205,11 @@ if __name__ == "__main__":
         # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
         # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
         # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_10K/FFSCT_0.100/m_1.3_n_2.3",
-        ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.3_n_2.3",
-        ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_400K/FFSCT_0.100/m_1.3_n_2.3",
-        ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.5_n_3.0",
-        ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.047/m_1.3_n_2.3",
-        ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_2.0_n_4.0",
+        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.3_n_2.3",
+        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_400K/FFSCT_0.100/m_1.3_n_2.3",
+        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.5_n_3.0",
+        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.047/m_1.3_n_2.3",
+        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_2.0_n_4.0",
     ]
 
     for target_folder_path in TARGET_FOLDER_PATHS:
@@ -223,17 +226,20 @@ if __name__ == "__main__":
         # [1, 2, 4],
         # [1, 4, 7],
         # [1, 5, 9],
+        [1, 6, 12],
+        [1, 6, 12],
+        [1, 6, 12],
         # [1, 3, 10],
         # [1, 3, 9],
         # [1, 3, 8],
         # [1, 2, 10],
         # [1, 2, 6],
         # [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 4],
-        [1, 2, 5],
-        [1, 2, 11]
+        # [1, 2, 3],
+        # [1, 2, 3],
+        # [1, 2, 4],
+        # [1, 2, 5],
+        # [1, 2, 11]
     ]
 
     main(TARGET_FOLDER_PATHS, timestamps)

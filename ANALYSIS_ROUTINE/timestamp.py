@@ -75,32 +75,30 @@ def get_parametric_cooling_m_n(target_folder_path):
             m = target_folder_path[index+2:index+5]
             index = target_folder_path.index("n_")
             n = target_folder_path[index+2:index+5]
-    else:
-        return
-
     return m, n
 
 if __name__ == "__main__":
+    max_output = 0
     ROOT_PATH = "/data/daniellin/RAMSES_RUNS/"
     TARGET_FOLDER_PATHS = [
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.068",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.047",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.068",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.047",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.068",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.047",
-        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
-        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
-        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
-        # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
-        # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
-        # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
-        # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
-        # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
-        # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100"
+        ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
+        ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.068",
+        ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.047",
+        ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+        ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.068",
+        ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.047",
+        ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
+        ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.068",
+        ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.047",
+        ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
+        ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+        ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
+        ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
+        ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+        ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
+        ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
+        ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+        ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
         ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_10K/FFSCT_0.100/m_1.3_n_2.3",
         ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.3_n_2.3",
         ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_400K/FFSCT_0.100/m_1.3_n_2.3",
@@ -130,6 +128,7 @@ if __name__ == "__main__":
         df[title] = ""
 
         for output in outputs[0:len(outputs)-1]:
+            if len(outputs) - 1 > max_output: max_output = len(outputs) - 1
             data = pymses.RamsesOutput(target_folder_path, output)
             free_fall_time = find_free_fall_time(target_folder_path)
             units = set_units(data)
@@ -137,5 +136,8 @@ if __name__ == "__main__":
             time_kyr = data.info['time'] * units['unit_T_Kyr']
             ratio_to_free_fall_time = round(time_sec / free_fall_time, 3)
             df.loc[output, title] = ratio_to_free_fall_time
+
+        for i in range(1, max_output+1):
+            df.loc[i, "timestamp"] = i
 
     df.to_csv("output_parametric.csv", index=False)

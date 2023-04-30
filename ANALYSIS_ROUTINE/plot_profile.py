@@ -6,6 +6,7 @@ matplotlib.use('Agg')
 import pymses
 from pymses.sources.ramses.filename_utils import  search_valid_outputs
 from pymses.filters import CellsToPoints
+from module_style import *
 from module_histogram import *
 from module_units import *
 from module_plot import *
@@ -112,10 +113,10 @@ def get_parametric_cooling_m_n(target_folder_path):
 def main(target_folder_paths, timestamps):
 
     for target_folder_path in target_folder_paths: # Loop FFSCT = 0.1, 0.068, 0.047
-        fig1, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(4, 4))
-        fig2, ax2 = plt.subplots(nrows=1, ncols=1, figsize=(4, 4))
-        fig3, ax3 = plt.subplots(nrows=1, ncols=1, figsize=(4, 4))
-        fig4, ax4 = plt.subplots(nrows=1, ncols=1, figsize=(4, 4))
+        fig1, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(6.0, 6.0))
+        fig2, ax2 = plt.subplots(nrows=1, ncols=1, figsize=(6.0, 6.0))
+        fig3, ax3 = plt.subplots(nrows=1, ncols=1, figsize=(6.0, 6.0))
+        fig4, ax4 = plt.subplots(nrows=1, ncols=1, figsize=(6.0, 6.0))
         free_fall_time = find_free_fall_time(target_folder_path)
         ffsct = find_ffsct(target_folder_path)
         T0 = find_T0(target_folder_path)
@@ -168,20 +169,20 @@ def main(target_folder_paths, timestamps):
                 ax4, bins_center * units['unit_L_pc'], enclosed_mass * units["unit_M_Msun"], color=color, label=legend)
 
         if m != "" and n != "":
-            ax1.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0, fontsize = 8)
-            ax2.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0, fontsize = 8)
-            ax3.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0, fontsize = 8)
-            ax4.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0, fontsize = 8)
+            ax1.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize = 8)
+            ax2.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize = 8)
+            ax3.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize = 8)
+            ax4.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize = 8)
         else:
             ax1.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
             ax2.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
             ax3.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
             ax4.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
 
-        ax1.legend(loc='upper right', fontsize=7)
-        ax2.legend(loc='upper right', fontsize=7)
-        ax3.legend(loc='upper right', fontsize=7)
-        ax4.legend(loc='upper right', fontsize=7)
+        ax1.legend(loc='upper right')#, fontsize=7)
+        ax2.legend(loc='upper right')#, fontsize=7)
+        ax3.legend(loc='upper right')#, fontsize=7)
+        ax4.legend(loc='upper right')#, fontsize=7)
         fig1.tight_layout()
         fig2.tight_layout()
         fig3.tight_layout()
@@ -201,6 +202,8 @@ def main(target_folder_paths, timestamps):
 
 if __name__ == "__main__":
 
+    plot_style()
+
     ROOT_PATH = "/data/daniellin/RAMSES_RUNS/"
     TARGET_FOLDER_PATHS = [
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
@@ -212,9 +215,9 @@ if __name__ == "__main__":
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.068",
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.047",
-        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
-        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
-        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
+        ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
+        ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+        ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
         # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
         # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
         # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
@@ -222,11 +225,11 @@ if __name__ == "__main__":
         # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
         # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
         # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_10K/FFSCT_0.100/m_1.3_n_2.3",
-        ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.3_n_2.3",
-        ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_400K/FFSCT_0.100/m_1.3_n_2.3",
-        ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.5_n_3.0",
-        ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.047/m_1.3_n_2.3",
-        ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_2.0_n_4.0",
+        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.3_n_2.3",
+        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_400K/FFSCT_0.100/m_1.3_n_2.3",
+        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.5_n_3.0",
+        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.047/m_1.3_n_2.3",
+        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_2.0_n_4.0",
     ]
 
     for target_folder_path in TARGET_FOLDER_PATHS:
@@ -243,17 +246,20 @@ if __name__ == "__main__":
         # [1, 2, 4],
         # [1, 4, 7],
         # [1, 5, 9],
+        [1, 6, 12],
+        [1, 6, 12],
+        [1, 6, 12],
         # [1, 3, 10],
         # [1, 3, 9],
         # [1, 3, 8],
         # [1, 2, 10],
         # [1, 2, 6],
         # [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 4],
-        [1, 2, 5],
-        [1, 2, 11]
+        # [1, 2, 3],
+        # [1, 2, 3],
+        # [1, 2, 4],
+        # [1, 2, 5],
+        # [1, 2, 11]
     ]
 
     main(TARGET_FOLDER_PATHS, timestamps)
