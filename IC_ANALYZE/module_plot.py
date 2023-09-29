@@ -1,8 +1,9 @@
 from matplotlib.colors import *
+from matplotlib.ticker import MultipleLocator
 
 
 def plot_equilibrium_temperature(fig, ax, nH_array, balance_temperature):
-    ax.plot(nH_array, balance_temperature, linewidth=1, linestyle="--", color="black")
+    ax.plot(nH_array, balance_temperature, linewidth=2, linestyle="--", color="black")
     return
 
 
@@ -11,13 +12,17 @@ def plot_total_cooling_rate(fig, ax, extent, total_cooling_power):
         np.min(total_cooling_power), np.max(total_cooling_power)))
     im = ax.imshow(total_cooling_power.T, origin="lower", cmap="bwr", extent=extent, interpolation="none",
                    norm=SymLogNorm(linthresh=1e-26, vmin=-1e-23, vmax=1e-23))
-    ax.set_title("Equilibrium temperature")
+    ax.set_title("Cooling and Heating")
     ax.set_xlabel(r'$\rm{log_{10}}\; n_H \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log_{10}}\; T \; (\rm{K})$')
-    # ticks = [-1e-12, -1e-16, -1e-20, -1e-24, 0, 1e-24, 1e-20, 1e-16, 1e-12]
+    ax.set_xticks([-2, 0, 2, 4, 6, 8, 10])
+    ax.xaxis.set_minor_locator(MultipleLocator(1))
+    ax.set_yticks([0, 1, 2, 3, 4])
+    ticks = [-1e-23, -1e-24, -1e-25, -1e-26, 0, 1e-26, 1e-25, 1e-24, 1e-23]
     cb = fig.colorbar(im, ax=ax, extend='both', label=r"$\rm{\Gamma - n_H\Lambda} \;(erg \;s^{-1})$", location="bottom",
-                      pad=0.3)
-    cb.ax.tick_params(labelsize=8)
+                      pad=0.3, ticks=ticks)
+    cb.ax.tick_params(labelsize=10)
+    cb.ax.minorticks_on()
     return
 
 
@@ -52,13 +57,18 @@ def plot_m(fig, ax, extent, m_matrix):
     ax.set_title(r"$\rm{m(n_H, T)}$")
     ax.set_xlabel(r'$\rm{log_{10}}\; n_H \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log_{10}}\; T \; (\rm{K})$')
-    fig.colorbar(im, ax=ax, extend='both', label='m', location="bottom", pad=0.3)
+    ax.set_xticks([-2, 0, 2, 4, 6, 8, 10])
+    ax.xaxis.set_minor_locator(MultipleLocator(1))
+    ax.set_yticks([0, 1, 2, 3, 4])
+    ticks = [0.1, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+    cb = fig.colorbar(im, ax=ax, extend='both', label='m', location="bottom", pad=0.3, ticks=ticks)
+    cb.ax.minorticks_on()
     return
 
 
 def plot_m_contour(fig, ax, nH_mesh, T_mesh, m_matrix):
     CS = ax.contour(nH_mesh, T_mesh, m_matrix.T, levels=[1.5, 2], colors=('grey', 'brown'))
-    ax.clabel(CS, CS.levels, inline=True, fontsize=10)
+    ax.clabel(CS, CS.levels, inline=True, fontsize=14)
     return
 
 
@@ -68,13 +78,18 @@ def plot_n(fig, ax, extent, n_matrix):
     ax.set_title(r"$\rm{n(n_H, T)}$")
     ax.set_xlabel(r'$\rm{log_{10}}\; n_H \; (\rm{cm^{-3}})$')
     ax.set_ylabel(r'$\rm{log_{10}}\; T \; (\rm{K})$')
-    fig.colorbar(im, ax=ax, extend='both', label='n', location="bottom", pad=0.3)
+    ax.set_xticks([-2, 0, 2, 4, 6, 8, 10])
+    ax.xaxis.set_minor_locator(MultipleLocator(1))
+    ax.set_yticks([0, 1, 2, 3, 4])
+    ticks = [0.1, 0.5, 1.0, 1.50, 2.0]
+    cb = fig.colorbar(im, ax=ax, extend='both', label='n', location="bottom", pad=0.3, ticks=ticks)
+    cb.ax.minorticks_on()
     return
 
 
 def plot_n_contour(fig, ax, nH_mesh, T_mesh, n_matrix):
     CS = ax.contour(nH_mesh, T_mesh, n_matrix.T, levels=[0.5, 1], colors=('grey', 'yellow'))
-    ax.clabel(CS, CS.levels, inline=True, fontsize=10)
+    ax.clabel(CS, CS.levels, inline=True, fontsize=14)
     return
 
 
@@ -86,7 +101,7 @@ def plot_Gamma1(fig, ax, extent, Gamma1):
     ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
     cb = fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_1$", ticks=np.arange(-3, 3.5, 0.5), location="bottom",
                       pad=0.3)
-    cb.ax.tick_params(labelsize=8)
+    cb.ax.tick_params(labelsize=14)
     return
 
 
@@ -95,12 +110,15 @@ def plot_Gamma2(fig, ax, extent, Gamma2):
     im = ax.imshow(Gamma2.T, origin="lower", cmap="bwr", extent=extent, interpolation="none",
                    norm=TwoSlopeNorm(vcenter=1.0, vmin=-3, vmax=3))
     # ax.set_title(r"$\Gamma \; \rm{(nH,T)}, \;\; \Gamma\rm{=1+(3-2m)/(2n-2)}$")
-    ax.set_title(r"$\Gamma_2\rm{(n_H,T)}$")
-    ax.set_xlabel(r'$\rm{log}\; n_H \; (\rm{cm^{-3}})$')
-    ax.set_ylabel(r'$\rm{log}\; T \; (\rm{K})$')
+    ax.set_title(r"$\gamma\rm{(n_H,T)}$")
+    ax.set_xlabel(r'$\rm{log_{10}}\; n_H \; (\rm{cm^{-3}})$')
+    ax.set_ylabel(r'$\rm{log_{10}}\; T \; (\rm{K})$')
+    ax.set_xticks([-2, 0, 2, 4, 6, 8, 10])
+    ax.set_yticks([0, 1, 2, 3, 4])
     # fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma$", ticks=np.arange(-3, 3.5, 0.5), location="bottom")
-    cb = fig.colorbar(im, ax=ax, extend="both", label=r"$\Gamma_2$", location="bottom", pad=0.3)
-    cb.ax.tick_params(labelsize=8)
+    cb = fig.colorbar(im, ax=ax, extend="both", label=r"$\gamma$", location="bottom", pad=0.3)
+    cb.ax.tick_params(labelsize=14)
+    cb.ax.minorticks_on()
     return
 
 
