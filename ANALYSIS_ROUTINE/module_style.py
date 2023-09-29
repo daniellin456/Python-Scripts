@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
 def plot_style():
    
-    params = {'legend.fontsize': 14,
-             'axes.labelsize': 22,
-             'axes.titlesize':20,
+    params = {'legend.fontsize': 18,
+             'axes.labelsize': 26,
+             'axes.titlesize':24,
               'axes.titlepad':20,
-             'xtick.labelsize':22,
-             'ytick.labelsize':22,
+             'xtick.labelsize':26,
+             'ytick.labelsize':26,
              'xtick.major.size':5,
              'xtick.minor.size':2,
              'ytick.major.size':5,

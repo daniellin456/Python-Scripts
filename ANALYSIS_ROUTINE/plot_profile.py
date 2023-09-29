@@ -113,10 +113,10 @@ def get_parametric_cooling_m_n(target_folder_path):
 def main(target_folder_paths, timestamps):
 
     for target_folder_path in target_folder_paths: # Loop FFSCT = 0.1, 0.068, 0.047
-        fig1, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(6.0, 6.0))
-        fig2, ax2 = plt.subplots(nrows=1, ncols=1, figsize=(6.0, 6.0))
-        fig3, ax3 = plt.subplots(nrows=1, ncols=1, figsize=(6.0, 6.0))
-        fig4, ax4 = plt.subplots(nrows=1, ncols=1, figsize=(6.0, 6.0))
+        fig1, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(7.0, 7.0))
+        fig2, ax2 = plt.subplots(nrows=1, ncols=1, figsize=(7.0, 7.0))
+        fig3, ax3 = plt.subplots(nrows=1, ncols=1, figsize=(7.0, 7.0))
+        fig4, ax4 = plt.subplots(nrows=1, ncols=1, figsize=(7.0, 7.0))
         free_fall_time = find_free_fall_time(target_folder_path)
         ffsct = find_ffsct(target_folder_path)
         T0 = find_T0(target_folder_path)
@@ -209,15 +209,15 @@ if __name__ == "__main__":
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.068",
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.047",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+        ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.068",
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.047",
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.068",
         # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.047",
-        ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
-        ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
-        ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
+        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
+        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
         # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
         # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
         # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
@@ -229,7 +229,7 @@ if __name__ == "__main__":
         # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_400K/FFSCT_0.100/m_1.3_n_2.3",
         # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.5_n_3.0",
         # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.047/m_1.3_n_2.3",
-        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_2.0_n_4.0",
+        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_2.0_n_4.0"
     ]
 
     for target_folder_path in TARGET_FOLDER_PATHS:
@@ -240,15 +240,15 @@ if __name__ == "__main__":
         # [1, 2, 7],
         # [1, 4, 11],
         # [1, 6, 14],
-        # [1, 2, 4],
+        [1, 8, 20],
         # [1, 4, 7],
         # [1, 6, 9],
         # [1, 2, 4],
         # [1, 4, 7],
         # [1, 5, 9],
-        [1, 6, 12],
-        [1, 6, 12],
-        [1, 6, 12],
+        # [1, 6, 12],
+        # [1, 6, 12],
+        # [1, 6, 12],
         # [1, 3, 10],
         # [1, 3, 9],
         # [1, 3, 8],
