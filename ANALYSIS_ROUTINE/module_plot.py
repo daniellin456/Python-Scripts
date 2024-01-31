@@ -76,6 +76,7 @@ def plot_density_temperature_2d_histogram_imshow(fig, ax, hist_2d, density_edges
     # ax.set_ylabel(r"$Log10 Temperature " + r"$\rm(K)$")
     ax.set_ylabel(r"$\rm{log_{10}}\; T \; (\rm{K})$")
     ax.set_xticks([-2, 0, 2, 4, 6, 8, 10])
+    ax.set_yticks([0, 2, 4])
     ax.tick_params(which='major', width=1, length=5)
     ax.tick_params(which='minor', width=1, length=3)
     cbar = fig.colorbar(im, ax=ax, extend='both', orientation="horizontal", label='Mass ' + r'$\rm(M_{\odot})$', pad=0.3)

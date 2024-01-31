@@ -53,7 +53,7 @@ def intergrated_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamm
 
 def individual_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma3, a, b, c, d, balance_temperature,
                     total_cooling_power):
-    fig_x_length = 6
+    fig_x_length = 5
     fig_y_length = 4
     gamma = 5 / 3
     extent = [np.log10(nH_array[0]), np.log10(nH_array[-1]), np.log10(T_array[0]), np.log10(T_array[-1])]
@@ -63,7 +63,7 @@ def individual_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma
     plot_total_cooling_rate(fig, ax, extent, total_cooling_power)
     plot_equilibrium_temperature(fig, ax, np.log10(nH_array), np.log10(balance_temperature))
     plt.tight_layout()
-    fig.savefig('equilibrium_temperature.pdf')
+    fig.savefig('cooling_and_heating.pdf')
 
     fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(fig_x_length, fig_y_length))
     plot_m(fig, ax, extent, m_matrix)
@@ -118,7 +118,7 @@ def individual_plot(nH_array, T_array, m_matrix, n_matrix, Gamma1, Gamma2, Gamma
 def main():
     plot_style()
     nH_start = -2
-    nH_end = 10
+    nH_end = 8
     nH_count = 500
     T_start = 0
     T_end = 4

@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 # This module contains functions for imaging the ramses output
+from __future__ import division
 import matplotlib
 matplotlib.use('Agg')
 ##### pymses dependences ##################################################################
@@ -41,19 +42,21 @@ from matplotlib import ticker
 def local_dir(dir):
     #ldirs = ['/gpfs/users/', '/drf/projets/alfven-data/','/dsm/anais/storageA/','/drf/projets/capucine/']
     ldirs = ['/data/']
-    for ldir in ldirs:
-        readdir = dir
-        writedir = dir + '/figures'
+    readdir = dir
+    writedir = "./figure/" + dir.split('/')[-1]
+    # for ldir in ldirs:
+    #     readdir = dir
+    #     writedir = "./figure" + dir.split('/')[-1]
         #if ldir == ldirs[3]:  writedir = ldir[2]+'ylee/'+dir
-        if os.path.exists(readdir):
-            if not os.path.exists(writedir):
-                os.makedirs(writedir)
-            return readdir, writedir
-        else:
-            if os.path.exists(writedir):
-                readdir = writedir
-                return readdir, writedir
-    return dir, dir
+    if os.path.exists(readdir):
+        if not os.path.exists(writedir):
+            os.makedirs(writedir)
+        return readdir, writedir
+        # else:
+        #     if os.path.exists(writedir):
+        #         readdir = writedir
+        #         return readdir, writedir
+    return readdir, writedir
 
 ###########################################################################
 
@@ -114,6 +117,7 @@ def norm_units(readdir, ioutput=-1):
     units["pres_P"] = ro.info["unit_pressure"].express(C.kg/C.m/C.s**2)
     units["temp_K"] = ro.info["unit_temperature"].express(C.K)
     units["mag_gauss"] = ro.info["unit_mag"].express(C.Gauss)
+    print units
     return units
 ###########################################################################
 # produce maps for various properties
@@ -269,6 +273,7 @@ def make_image(amr, ro, center, radius, num, path, pos_sink=None, mass_sink=None
     units = norm_units(path, ioutput=1)
 
     len_AU = units["len_AU"]
+    len_PC = units["len_pc"]
     time_Myr = units["time_Myr"]
     dens_gcc = units["dens_gcc"]
     len_cm = units["len_cm"]
@@ -284,7 +289,19 @@ def make_image(amr, ro, center, radius, num, path, pos_sink=None, mass_sink=None
         titlepath = path[len(path)-ind:]
     else:
         titlepath = path
-    titre = 'Time = %.3f kyr' % (time*1.e3)
+
+    if "SC01" in directory:
+        peak_density = 1280.01295051676
+
+    elif "SC0068" in directory:
+        peak_density = 12946.7537409113
+
+    elif "SC0047" in directory:
+        peak_density = 118748.249427123
+
+    t_ff = time*1e6*86400*365 / np.sqrt(3.0 * np.pi / 32.0 / 6.67e-8 / 2.31 / 1.66e-24 / peak_density)
+    print t_ff
+    titre = "Time = %.3f kyr, %.3f $t_{ff}$" % (time*1.e3, t_ff)
 
    # name = directory+'/coldens_z'+'_'+str(i_im)+'_'+format(num,'05')+'.pdf'
    # if (os.path.exists(name) and not overwrite): return
@@ -312,8 +329,8 @@ def make_image(amr, ro, center, radius, num, path, pos_sink=None, mass_sink=None
         cen1 = center[ind[0]]
         cen2 = center[ind[1]]
         cen3 = center[ind[2]]
-        fig_lim = [(cen1-radius-0.5)*len_AU, (cen1+radius-0.5)*len_AU,
-                   (cen2-radius-0.5)*len_AU, (cen2+radius-0.5)*len_AU]
+        fig_lim = [(cen1-radius-0.5)*len_PC, (cen1+radius-0.5)*len_PC,
+                   (cen2-radius-0.5)*len_PC, (cen2+radius-0.5)*len_PC]
         #fig_lim = [-radius*len_AU,radius*len_AU,-radius*len_AU,radius*len_AU]
         if len(PSCAL) > 0:
             if PSCAL[0] == -1:  # plot all passive scalar on same figure
@@ -430,18 +447,18 @@ def make_image(amr, ro, center, radius, num, path, pos_sink=None, mass_sink=None
                     ro, amr, cam_v, axes[ind[0], :], axes[ind[1], :])
                 plt.clf()
                 pos_vel = np.linspace(-radius, radius, vel_size+1)
-                pos_vel = (pos_vel[:-1] + radius/vel_size) * len_AU
-                xx, yy = np.meshgrid(pos_vel+(cen1-0.5)*len_AU,
-                                     pos_vel+(cen2-0.5)*len_AU)
+                pos_vel = (pos_vel[:-1] + radius/vel_size) * len_PC
+                xx, yy = np.meshgrid(pos_vel+(cen1-0.5)*len_PC,
+                                     pos_vel+(cen2-0.5)*len_PC)
                 q = plt.quiver(xx, yy, map_vx*vel_ms, map_vy*vel_ms,
                                color='w', pivot='middle', zorder=2)
-                qk = plt.quiverkey(q, 0.8, -0.08, 1.e4,
-                                   '10 km/s', color='k', labelpos='W')
+                qk = plt.quiverkey(q, 0.8, -0.08, 5.e3,
+                                   '5 km/s', color='k', labelpos='W')
                 im = plt.imshow(np.log10(map_rho*dens_gcc), extent=fig_lim, origin='lower',
                                 interpolation='none', zorder=1, cmap='plasma', vmin=-25, vmax=-13)
                 plt.title(titre)
-                plt.xlabel(loss[ind[0]]+' (AU)')
-                plt.ylabel(loss[ind[1]]+' (AU)')
+                plt.xlabel(loss[ind[0]]+' (pc)')
+                plt.ylabel(loss[ind[1]]+' (pc)')
                 cbar = plt.colorbar(im, extend='both')
                 cbar.set_label(
                     r'$\mathrm{log}_{10}\rho (\mathrm{g}\/\mathrm{cm}^{-3})$')
@@ -630,13 +647,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description="core visualization with axis alignement")
     parser.add_argument("read_dir", type=str, help="RAMSES output repository")
+    parser.add_argument("-t", "--time", help="timestamp")
     args = parser.parse_args()
     #readdir = args.read_dir
     #writedir = args.read_dir
 
     readdir, writedir = local_dir(args.read_dir)
+    print(readdir)
+    print(writedir)
     #outputs = search_ro(readdir)
-    outputs = [1,6,12]
+    outputs = eval(args.time)
     nout = len(outputs)
 
     overwrite = True
@@ -658,11 +678,11 @@ if __name__ == '__main__':
     map_size = 100
     plot_sinks = False
     rho_and_vel = True
-    col_dens = True
+    col_dens = False
     histogram = False
-    pressure = True
-    temperature = True
-    amr_level = True
+    pressure = False
+    temperature = False
+    amr_level = False
     
     #zoom_v = 0.5 / 2**np.arange(3)
     #i_ims = [0, 1, 2]

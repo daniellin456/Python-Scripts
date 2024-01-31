@@ -9,9 +9,9 @@ mp = 1.66e-24
 
 def main():
     nH = 1280  # density (cm^-3)
-    T = 80  # temperature (k)
-    m = 1.3  # power index of density
-    n = 2.3  # power index of temperature
+    T = 10  # temperature (k)
+    m = 2.0  # power index of density
+    n = 4.0  # power index of temperature
     alpha = 1  # ratio of cooling time to free fall time
 
     lambda_0 = kb / (gamma - 1) * np.sqrt(32 * G * mu * mp / 3 / np.pi) * nH ** (1.5 - m) * T ** (1 - n) / alpha

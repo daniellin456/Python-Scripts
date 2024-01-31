@@ -14,13 +14,13 @@ from module_plot import *
 def find_free_fall_time(target_folder_path):
 
     peak_density = 0.0
-    if "0.100" in target_folder_path:
+    if "SC01" in target_folder_path:
         peak_density = 1280.01295051676
 
-    elif "0.068" in target_folder_path:
+    elif "SC0068" in target_folder_path:
         peak_density = 12946.7537409113
 
-    elif "0.047" in target_folder_path:
+    elif "SC0047" in target_folder_path:
         peak_density = 118748.249427123
 
     free_fall_time = np.sqrt(3.0 * np.pi / 32.0 / 6.67e-8 / 2.31 / 1.66e-24 / peak_density)
@@ -110,7 +110,7 @@ def get_parametric_cooling_m_n(target_folder_path):
 
     return m, n
 
-def main(target_folder_paths, timestamps):
+def main(target_folder_paths, writedir, timestamps):
 
     for target_folder_path in target_folder_paths: # Loop FFSCT = 0.1, 0.068, 0.047
         fig1, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(7.0, 7.0))
@@ -118,14 +118,14 @@ def main(target_folder_paths, timestamps):
         fig3, ax3 = plt.subplots(nrows=1, ncols=1, figsize=(7.0, 7.0))
         fig4, ax4 = plt.subplots(nrows=1, ncols=1, figsize=(7.0, 7.0))
         free_fall_time = find_free_fall_time(target_folder_path)
-        ffsct = find_ffsct(target_folder_path)
-        T0 = find_T0(target_folder_path)
-        eta = find_eta(target_folder_path)
-        m, n = get_parametric_cooling_m_n(target_folder_path)
+        # ffsct = find_ffsct(target_folder_path)
+        # T0 = find_T0(target_folder_path)
+        # eta = find_eta(target_folder_path)
+        # m, n = get_parametric_cooling_m_n(target_folder_path)
         color_list = ['red', 'green', 'blue']
 
-        for timestamp, color in zip(timestamps[target_folder_paths.index(target_folder_path)], color_list): # Draw 3 different timestamp in each FFSCT
-
+        # for timestamp, color in zip(timestamps[target_folder_paths.index(target_folder_path)], color_list): # Draw 3 different timestamp in each FFSCT
+        for timestamp, color in zip(timestamps, color_list):  # Draw 3 different timestamp in each FFSCT
             bins = np.logspace(-2.0, -0.3, 32)
             bins_center = np.sqrt(bins[:-1] * bins[1:])
             bins = np.append(0, bins)
@@ -168,16 +168,16 @@ def main(target_folder_paths, timestamps):
             plot_enclosed_mass(
                 ax4, bins_center * units['unit_L_pc'], enclosed_mass * units["unit_M_Msun"], color=color, label=legend)
 
-        if m != "" and n != "":
-            ax1.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize = 8)
-            ax2.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize = 8)
-            ax3.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize = 8)
-            ax4.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize = 8)
-        else:
-            ax1.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
-            ax2.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
-            ax3.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
-            ax4.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
+        # if m != "" and n != "":
+        #     ax1.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize = 8)
+        #     ax2.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize = 8)
+        #     ax3.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize = 8)
+        #     ax4.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + ", m = " + m + ", n = " + n+ r", $T_0$ = " + T0)#, fontsize = 8)
+        # else:
+        #     ax1.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
+        #     ax2.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
+        #     ax3.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
+        #     ax4.set_title(r"$t_{ff}/t_{sc}$ = " + ffsct + r", $\eta$ = " + eta + r", $T_0$ = " + T0)
 
         ax1.legend(loc='upper right')#, fontsize=7)
         ax2.legend(loc='upper right')#, fontsize=7)
@@ -188,81 +188,93 @@ def main(target_folder_paths, timestamps):
         fig3.tight_layout()
         fig4.tight_layout()
 
-        if m != "" and n != "":
-            fig1.savefig("m_" + m + "_n_" + n + "_T0_" + T0 + "_ffsct_" + ffsct + "_Dens.pdf")
-            fig2.savefig("m_" + m + "_n_" + n + "_T0_" + T0 + "_ffsct_" + ffsct + "_Temp.pdf")
-            fig3.savefig("m_" + m + "_n_" + n + "_T0_" + T0 + "_ffsct_" + ffsct + "_Vel.pdf")
-            fig4.savefig("m_" + m + "_n_" + n + "_T0_" + T0 + "_ffsct_" + ffsct + "_Mass.pdf")
-        else:
-            fig1.savefig("eta_" + eta + "_T0_" + T0 + "_ffsct_" + ffsct + "_Dens.pdf")
-            fig2.savefig("eta_" + eta + "_T0_" + T0 + "_ffsct_" + ffsct + "_Temp.pdf")
-            fig3.savefig("eta_" + eta + "_T0_" + T0 + "_ffsct_" + ffsct + "_Vel.pdf")
-            fig4.savefig("eta_" + eta + "_T0_" + T0 + "_ffsct_" + ffsct + "_Mass.pdf")
+        # if m != "" and n != "":
+        #     fig1.savefig("m_" + m + "_n_" + n + "_T0_" + T0 + "_ffsct_" + ffsct + "_Dens.pdf")
+        #     fig2.savefig("m_" + m + "_n_" + n + "_T0_" + T0 + "_ffsct_" + ffsct + "_Temp.pdf")
+        #     fig3.savefig("m_" + m + "_n_" + n + "_T0_" + T0 + "_ffsct_" + ffsct + "_Vel.pdf")
+        #     fig4.savefig("m_" + m + "_n_" + n + "_T0_" + T0 + "_ffsct_" + ffsct + "_Mass.pdf")
+        # else:
+        #     fig1.savefig("eta_" + eta + "_T0_" + T0 + "_ffsct_" + ffsct + "_Dens.pdf")
+        #     fig2.savefig("eta_" + eta + "_T0_" + T0 + "_ffsct_" + ffsct + "_Temp.pdf")
+        #     fig3.savefig("eta_" + eta + "_T0_" + T0 + "_ffsct_" + ffsct + "_Vel.pdf")
+        #     fig4.savefig("eta_" + eta + "_T0_" + T0 + "_ffsct_" + ffsct + "_Mass.pdf")
+        fig1.savefig(writedir + "/Dens_Profile.pdf")
+        fig2.savefig(writedir + "/Temp_Profile.pdf")
+        fig3.savefig(writedir + "/Vel_Profile.pdf")
+        fig4.savefig(writedir + "/Mass_Profile.pdf")
     return
 
 if __name__ == "__main__":
 
     plot_style()
+    parser = argparse.ArgumentParser(description="plot profile")
+    parser.add_argument("read_dir", type=str, help="RMASES output repository")
+    parser.add_argument("-t","--time", help="timestamp")
+    args = parser.parse_args()
 
-    ROOT_PATH = "/data/daniellin/RAMSES_RUNS/"
-    TARGET_FOLDER_PATHS = [
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.068",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.047",
-        ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.068",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.047",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.068",
-        # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.047",
-        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
-        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
-        # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
-        # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
-        # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
-        # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
-        # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
-        # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
-        # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
-        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_10K/FFSCT_0.100/m_1.3_n_2.3",
-        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.3_n_2.3",
-        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_400K/FFSCT_0.100/m_1.3_n_2.3",
-        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.5_n_3.0",
-        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.047/m_1.3_n_2.3",
-        # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_2.0_n_4.0"
-    ]
+    readdir = [args.read_dir]
+    writedir = "./figure/" + args.read_dir.split('/')[-1]
+    timestamps = eval(args.time)
 
-    for target_folder_path in TARGET_FOLDER_PATHS:
-        if not os.path.exists(target_folder_path):
-            raise Exception("Folder does not exist!")
+    # ROOT_PATH = "/data/daniellin/RAMSES_RUNS/"
+    # TARGET_FOLDER_PATHS = [
+    #     # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
+    #     # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.068",
+    #     # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.047",
+    #     ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+    #     # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.068",
+    #     # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.047",
+    #     # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
+    #     # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.068",
+    #     # ROOT_PATH + "EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.047",
+    #     # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
+    #     # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+    #     # ROOT_PATH + "0.1_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
+    #     # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
+    #     # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+    #     # ROOT_PATH + "0.01_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
+    #     # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_10K/FFSCT_0.100",
+    #     # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_80K/FFSCT_0.100",
+    #     # ROOT_PATH + "0.001_EMPIRICAL_COOLING/BG_TEMP_400K/FFSCT_0.100",
+    #     # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_10K/FFSCT_0.100/m_1.3_n_2.3",
+    #     # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.3_n_2.3",
+    #     # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_400K/FFSCT_0.100/m_1.3_n_2.3",
+    #     # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_1.5_n_3.0",
+    #     # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.047/m_1.3_n_2.3",
+    #     # ROOT_PATH + "PARAMETRIC_COOLING/BG_TEMP_80K/FFSCT_0.100/m_2.0_n_4.0"
+    # ]
+    #
+    # for target_folder_path in TARGET_FOLDER_PATHS:
+    #     if not os.path.exists(target_folder_path):
+    #         raise Exception("Folder does not exist!")
 
-    timestamps = [
-        # [1, 2, 7],
-        # [1, 4, 11],
-        # [1, 6, 14],
-        [1, 8, 20],
-        # [1, 4, 7],
-        # [1, 6, 9],
-        # [1, 2, 4],
-        # [1, 4, 7],
-        # [1, 5, 9],
-        # [1, 6, 12],
-        # [1, 6, 12],
-        # [1, 6, 12],
-        # [1, 3, 10],
-        # [1, 3, 9],
-        # [1, 3, 8],
-        # [1, 2, 10],
-        # [1, 2, 6],
-        # [1, 2, 3],
-        # [1, 2, 3],
-        # [1, 2, 3],
-        # [1, 2, 4],
-        # [1, 2, 5],
-        # [1, 2, 11]
-    ]
+    # timestamps = [
+    #     # [1, 2, 7],
+    #     # [1, 4, 11],
+    #     # [1, 6, 14],
+    #     [1, 8, 20],
+    #     # [1, 4, 7],
+    #     # [1, 6, 9],
+    #     # [1, 2, 4],
+    #     # [1, 4, 7],
+    #     # [1, 5, 9],
+    #     # [1, 6, 12],
+    #     # [1, 6, 12],
+    #     # [1, 6, 12],
+    #     # [1, 3, 10],
+    #     # [1, 3, 9],
+    #     # [1, 3, 8],
+    #     # [1, 2, 10],
+    #     # [1, 2, 6],
+    #     # [1, 2, 3],
+    #     # [1, 2, 3],
+    #     # [1, 2, 3],
+    #     # [1, 2, 4],
+    #     # [1, 2, 5],
+    #     # [1, 2, 11]
+    # ]
 
-    main(TARGET_FOLDER_PATHS, timestamps)
+    main(readdir, writedir, timestamps)
     #To run compare diff eta
 
 
